@@ -13,7 +13,6 @@ TERMUX_PKG_DEPENDS="ffmpeg, gdk-pixbuf, glib, gtk3, libc++, libexpat, libflac, l
 TERMUX_PKG_BUILD_DEPENDS="libjpeg-turbo, libjpeg-turbo-static, libmp3lame, libpng, patchelf, rapidjson, zlib"
 TERMUX_PKG_UPDATE_VERSION_REGEXP="\d+.\d+.\d+"
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_NO_STRIP=true
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DCMAKE_STRIP=llvm-strip
 -DUSE_MIDI=OFF
