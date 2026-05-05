@@ -2,16 +2,14 @@ TERMUX_PKG_HOMEPAGE=https://librewolf.net/
 TERMUX_PKG_DESCRIPTION="A custom version of Firefox, focused on privacy, security and freedom."
 TERMUX_PKG_LICENSE="MPL-2.0"
 TERMUX_PKG_MAINTAINER="@3ls-it"
-TERMUX_PKG_VERSION="149.0-1"
-TERMUX_PKG_REVISION=1
-TERMUX_PKG_SRCURL="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/148.0.2-3/librewolf-148.0.2-3.source.tar.gz"
-TERMUX_PKG_SHA256=e00c0de9330b6655fbfa2e31540d5f02248f6b1959bbece384d4afb1a0d6efa7
+TERMUX_PKG_VERSION="150.0.1-1"
+TERMUX_PKG_SRCURL="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${TERMUX_PKG_VERSION}/librewolf-${TERMUX_PKG_VERSION}.source.tar.gz"
+TERMUX_PKG_SHA256=d6470f5d93b531b9a20f750f2a2903ce20f5186e5bc4e87e28bbb6f4409fe4fa
 # ffmpeg and pulseaudio are dependencies through dlopen(3):
 TERMUX_PKG_DEPENDS="ffmpeg, fontconfig, freetype, gdk-pixbuf, glib, gtk3, libandroid-shmem, libandroid-spawn, libc++, libcairo, libevent, libffi, libice, libicu, libjpeg-turbo, libnspr, libnss, libpixman, libsm, libvpx, libwebp, libx11, libxcb, libxcomposite, libxdamage, libxext, libxfixes, libxrandr, libxtst, pango, pulseaudio, zlib"
 TERMUX_PKG_BUILD_DEPENDS="libcpufeatures, libice, libsm"
 TERMUX_PKG_BUILD_IN_SRC=true
-# https://github.com/termux/termux-packages/issues/29105
-TERMUX_PKG_AUTO_UPDATE=false
+TERMUX_PKG_AUTO_UPDATE=true
 
 
 termux_pkg_auto_update() {
