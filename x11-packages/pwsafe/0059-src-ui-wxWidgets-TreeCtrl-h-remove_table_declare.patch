@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/TreeCtrl.h	2026-04-25 21:19:02.099995870 -0400
++++ b/src/ui/wxWidgets/TreeCtrl.h	2026-04-25 21:19:34.311995858 -0400
+@@ -174,7 +174,6 @@
+ class TreeCtrl : public TreeCtrlBase, public Observer
+ {
+   DECLARE_CLASS( TreeCtrl )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructors

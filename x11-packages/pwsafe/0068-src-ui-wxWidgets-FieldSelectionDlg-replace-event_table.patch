@@ -1,0 +1,28 @@
+--- a/src/ui/wxWidgets/FieldSelectionDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/FieldSelectionDlg.cpp	2026-04-26 21:43:12.513880619 -0400
+@@ -39,13 +39,8 @@
+   return txt == wxEmptyString? (_T("Select fields to ") + operation) : txt;
+ }
+ 
+-DECLARE_EVENT_TYPE(EVT_RELAYOUT_DLG, -1)
+-DEFINE_EVENT_TYPE(EVT_RELAYOUT_DLG)
+-
+-BEGIN_EVENT_TABLE( FieldSelectionDlg, wxDialog )
+-  EVT_INIT_DIALOG(FieldSelectionDlg::OnInitDialog)
+-  EVT_COMMAND(wxID_ANY, EVT_RELAYOUT_DLG, FieldSelectionDlg::OnRelayoutDlg)
+-END_EVENT_TABLE()
++wxDECLARE_EVENT(EVT_RELAYOUT_DLG, wxCommandEvent);
++wxDEFINE_EVENT(EVT_RELAYOUT_DLG, wxCommandEvent);
+ 
+ FieldSelectionDlg::FieldSelectionDlg(wxWindow *parent, const CItemData::FieldType* available, size_t navail,
+                                      const CItemData::FieldType* mandatory, size_t nmandatory,
+@@ -61,6 +56,9 @@
+   wxASSERT(!parent || parent->IsTopLevel());
+ 
+   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
++
++  Bind(wxEVT_INIT_DIALOG, &FieldSelectionDlg::OnInitDialog, this);
++  Bind(EVT_RELAYOUT_DLG, &FieldSelectionDlg::OnRelayoutDlg, this);
+   
+   dlgSizer->AddSpacer(TopMargin);
+   dlgSizer->Add(new wxStaticText(this, wxID_ANY, FieldSelText(dlgText, operation)), wxSizerFlags(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin));

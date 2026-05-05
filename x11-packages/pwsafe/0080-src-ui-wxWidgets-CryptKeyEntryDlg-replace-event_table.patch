@@ -1,0 +1,28 @@
+--- a/src/ui/wxWidgets/CryptKeyEntryDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/CryptKeyEntryDlg.cpp	2026-04-28 20:17:08.544724431 -0400
+@@ -32,13 +32,6 @@
+ //(*IdInit(CryptKeyEntryDlg)
+ //*)
+ 
+-BEGIN_EVENT_TABLE(CryptKeyEntryDlg, wxDialog)
+-  //(*EventTable(CryptKeyEntryDlg)
+-  EVT_BUTTON( wxID_OK,     CryptKeyEntryDlg::OnOk     )
+-  EVT_BUTTON( wxID_CANCEL, CryptKeyEntryDlg::OnCancel )
+-  EVT_CLOSE(               CryptKeyEntryDlg::OnClose  )
+-  //*)
+-END_EVENT_TABLE()
+ 
+ CryptKeyEntryDlg::CryptKeyEntryDlg(Mode mode) : m_Mode(mode)
+ {
+@@ -55,6 +48,11 @@
+                           modeVariant, pwsafeAppName,
+                           MAJORVERSION, MINORVERSION, SPECIALBUILD);
+ #endif
++
++  Bind(wxEVT_BUTTON, &CryptKeyEntryDlg::OnOk, this, wxID_OK);
++  Bind(wxEVT_BUTTON, &CryptKeyEntryDlg::OnCancel, this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &CryptKeyEntryDlg::OnClose, this);
++
+   Create(nullptr, -1, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL, _T("id"));
+   //*)
+   CreateControls();

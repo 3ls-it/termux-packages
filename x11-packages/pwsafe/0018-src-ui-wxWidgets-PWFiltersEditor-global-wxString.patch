@@ -1,0 +1,198 @@
+--- a/src/ui/wxWidgets/PWFiltersEditor.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersEditor.cpp	2026-04-03 22:54:59.590995749 -0400
+@@ -54,73 +54,84 @@
+ ////@end XPM images
+ 
+ // The values of Filters Active Renderer is index into image list
+-static wxString CheckTypeStringValues[MAX_PWF_ELEMENTS] = { L"0", L"1", L"2", L"3", L"4", L"5" };
+-
+-static const wxArrayString CheckTypeString(MAX_PWF_ELEMENTS, CheckTypeStringValues);
++//static wxString CheckTypeStringValues[MAX_PWF_ELEMENTS] = { L"0", L"1", L"2", L"3", L"4", L"5" };
++static const wchar_t* const CheckTypeStringValuesW[] = { L"0", L"1", L"2", L"3", L"4", L"5" };
++//static const wxArrayString CheckTypeString(MAX_PWF_ELEMENTS, CheckTypeStringValues);
++static const wxArrayString& GetCheckTypeString()
++{
++  static wxArrayString s;
++  if (s.empty()) {
++    for (auto* w : CheckTypeStringValuesW) s.Add(wxString(w));
++  }
++  return s;
++}
+ 
+-// Map between FilterType and string
+-const std::map<int, wxString> FieldTypeString = {
+-  {FT_GROUPTITLE, towxstring(CItemData::EngFieldName(CItemData::GROUPTITLE))},
+-  {FT_GROUP, towxstring(CItemData::EngFieldName(CItemData::GROUP))},
+-  {FT_TITLE, towxstring(CItemData::EngFieldName(CItemData::TITLE))},
+-  {FT_USER, towxstring(CItemData::EngFieldName(CItemData::USER))},
+-  {FT_NOTES, towxstring(CItemData::EngFieldName(CItemData::NOTES))},
+-  {FT_PASSWORD, towxstring(CItemData::EngFieldName(CItemData::PASSWORD))},
+-  {FT_CTIME, towxstring(CItemData::EngFieldName(CItemData::CTIME))},
+-  {FT_PMTIME, towxstring(CItemData::EngFieldName(CItemData::PMTIME))},
+-  {FT_ATIME, towxstring(CItemData::EngFieldName(CItemData::ATIME))},
+-  {FT_XTIME, towxstring(CItemData::EngFieldName(CItemData::XTIME))},
+-  {FT_RMTIME, towxstring(CItemData::EngFieldName(CItemData::RMTIME))},
+-  {FT_URL, towxstring(CItemData::EngFieldName(CItemData::URL))},
+-  {FT_AUTOTYPE, towxstring(CItemData::EngFieldName(CItemData::AUTOTYPE))},
+-  {FT_PWHIST, towxstring(CItemData::EngFieldName(CItemData::PWHIST))},
+-  {FT_POLICY, towxstring(CItemData::EngFieldName(CItemData::POLICY))},
+-  {FT_XTIME_INT, towxstring(CItemData::EngFieldName(CItemData::XTIME_INT))},
+-  {FT_RUNCMD, towxstring(CItemData::EngFieldName(CItemData::RUNCMD))},
+-  {FT_DCA, towxstring(CItemData::EngFieldName(CItemData::DCA))},
+-  {FT_SHIFTDCA, towxstring(CItemData::EngFieldName(CItemData::SHIFTDCA))},
+-  {FT_EMAIL, towxstring(CItemData::EngFieldName(CItemData::EMAIL))},
+-  {FT_PROTECTED, towxstring(CItemData::EngFieldName(CItemData::PROTECTED))},
+-  {FT_SYMBOLS, towxstring(CItemData::EngFieldName(CItemData::SYMBOLS))},
+-  {FT_POLICYNAME, towxstring(CItemData::EngFieldName(CItemData::POLICYNAME))},
+-  {FT_KBSHORTCUT, towxstring(CItemData::EngFieldName(CItemData::KBSHORTCUT))},
+-  {FT_END, _T("------")}, // Separator
+-  {FT_ENTRYSIZE, _("Entry size")},
+-  {FT_ENTRYTYPE, _("Entry type")},
+-  {FT_ENTRYSTATUS, _("Entry status")},
+-  {FT_UNKNOWNFIELDS, _("Unknown fields")},
+-  {FT_PASSWORDLEN, _("Password Length")},
+-  {HT_PRESENT, _("Field present")},
+-  {HT_ACTIVE, _("Field active")},
+-  {HT_NUM, _("Number stored")},
+-  {HT_MAX, _("Maximal Number stored")},
+-  {HT_CHANGEDATE, _("Change Date")},
+-  {HT_PASSWORDS, _("Previous Passwords")},
+-  {HT_END, _T("------")}, // Separator
+-  {PT_PRESENT, _("Field present")},
+-  {PT_LENGTH, _("Password length")},
+-  {PT_LOWERCASE, _("Minimum lowercase characters")},
+-  {PT_UPPERCASE, _("Minimum uppercase characters")},
+-  {PT_DIGITS, _("Minimum digits")},
+-  {PT_SYMBOLS, _("Minimum symbols")},
+-  {PT_EASYVISION, _("Easyvision characters")},
+-  {PT_PRONOUNCEABLE, _("Pronounceable passwords")},
+-  {PT_HEXADECIMAL, _("Hexadecimal characters")},
+-  {PT_END, _T("------")}, // Separator
+-  {AT_PRESENT, _("Attachment")},
+-  {AT_TITLE, _("Title")},
+-  {AT_CTIME, _("Date added")},
+-  {AT_MEDIATYPE, _("Media Type")},
+-  {AT_FILENAME, _("File Name")},
+-  {AT_FILEPATH, _("File Path")},
+-  {AT_FILECTIME, _("File Creation Date")},
+-  {AT_FILEMTIME, _("File Last Modified Date")},
+-  {AT_FILEATIME, _("File Last Accessed date")},
+-  {AT_END, _T("------")}, // Separator
+-  {FT_ATTACHMENT, _("Attachment")},
+-  {FT_INVALID, _("Click here to pick a field")},
++// Avoid wxString/std::map dynamic initialization at load time (can crash in Release on Android/Termux).
++// Keep tables POD-only and create wxStrings at runtime in getFieldTypeString().
++static const std::pair<int, CItemData::FieldType> kFieldTypeEngName[] = {
++  {FT_GROUPTITLE, CItemData::GROUPTITLE},
++  {FT_GROUP, CItemData::GROUP},
++  {FT_TITLE, CItemData::TITLE},
++  {FT_USER, CItemData::USER},
++  {FT_NOTES, CItemData::NOTES},
++  {FT_PASSWORD, CItemData::PASSWORD},
++  {FT_CTIME, CItemData::CTIME},
++  {FT_PMTIME, CItemData::PMTIME},
++  {FT_ATIME, CItemData::ATIME},
++  {FT_XTIME, CItemData::XTIME},
++  {FT_RMTIME, CItemData::RMTIME},
++  {FT_URL, CItemData::URL},
++  {FT_AUTOTYPE, CItemData::AUTOTYPE},
++  {FT_PWHIST, CItemData::PWHIST},
++  {FT_POLICY, CItemData::POLICY},
++  {FT_XTIME_INT, CItemData::XTIME_INT},
++  {FT_RUNCMD, CItemData::RUNCMD},
++  {FT_DCA, CItemData::DCA},
++  {FT_SHIFTDCA, CItemData::SHIFTDCA},
++  {FT_EMAIL, CItemData::EMAIL},
++  {FT_PROTECTED, CItemData::PROTECTED},
++  {FT_SYMBOLS, CItemData::SYMBOLS},
++  {FT_POLICYNAME, CItemData::POLICYNAME},
++  {FT_KBSHORTCUT, CItemData::KBSHORTCUT},
+ };
+ 
++static const std::pair<int, const char*> kFieldTypeMsgId[] = {
++  {FT_END, "------"}, // Separator
++  {FT_ENTRYSIZE, "Entry size"},
++  {FT_ENTRYTYPE, "Entry type"},
++  {FT_ENTRYSTATUS, "Entry status"},
++  {FT_UNKNOWNFIELDS, "Unknown fields"},
++  {FT_PASSWORDLEN, "Password Length"},
++  {HT_PRESENT, "Field present"},
++  {HT_ACTIVE, "Field active"},
++  {HT_NUM, "Number stored"},
++  {HT_MAX, "Maximal Number stored"},
++  {HT_CHANGEDATE, "Change Date"},
++  {HT_PASSWORDS, "Previous Passwords"},
++  {HT_END, "------"}, // Separator
++  {PT_PRESENT, "Field present"},
++  {PT_LENGTH, "Password length"},
++  {PT_LOWERCASE, "Minimum lowercase characters"},
++  {PT_UPPERCASE, "Minimum uppercase characters"},
++  {PT_DIGITS, "Minimum digits"},
++  {PT_SYMBOLS, "Minimum symbols"},
++  {PT_EASYVISION, "Easyvision characters"},
++  {PT_PRONOUNCEABLE, "Pronounceable passwords"},
++  {PT_HEXADECIMAL, "Hexadecimal characters"},
++  {PT_END, "------"}, // Separator
++  {AT_PRESENT, "Attachment"},
++  {AT_TITLE, "Title"},
++  {AT_CTIME, "Date added"},
++  {AT_MEDIATYPE, "Media Type"},
++  {AT_FILENAME, "File Name"},
++  {AT_FILEPATH, "File Path"},
++  {AT_FILECTIME, "File Creation Date"},
++  {AT_FILEMTIME, "File Last Modified Date"},
++  {AT_FILEATIME, "File Last Accessed date"},
++  {AT_END, "------"}, // Separator
++  {FT_ATTACHMENT, "Attachment"},
++  {FT_INVALID, "Click here to pick a field"},
++};
+ 
+ /*!
+  *  Return pre-defined text as return value and type wxString - do not translate, is done in LoadAString from core
+@@ -139,9 +150,19 @@
+ 
+ wxString pwFiltersFTChoiceRenderer::getFieldTypeString(int ft)
+ {
+-  std::map<int, wxString>::const_iterator iter = FieldTypeString.find(ft);
+-  ASSERT(iter != FieldTypeString.end());
+-  return _(iter->second);
++  for (const auto& kv : kFieldTypeEngName) {
++    if (kv.first == ft) {
++      // English field name (not translated here)
++      return towxstring(CItemData::EngFieldName(kv.second));
++    }
++  }
++  for (const auto& kv : kFieldTypeMsgId) {
++    if (kv.first == ft) {
++      return wxGetTranslation(kv.second);
++    }
++  }
++  ASSERT(false);
++  return wxEmptyString;
+ }
+ 
+ /*!
+@@ -223,7 +244,8 @@
+ const wxString pwFiltersActiveRenderer::GetCellValueOfCheckType(PWFCheckType ct)
+ {
+   ASSERT(ct < MAX_PWF_ELEMENTS);
+-  return CheckTypeString[ct];
++  //return CheckTypeString[ct];
++  return GetCheckTypeString()[ct];
+ }
+ 
+ /*!
+@@ -372,8 +394,11 @@
+       m_bestSize.IncTo(DoGetBestSize(attr, dc, _(value)));
+     }
+      */
+-    for(const auto& kv : FieldTypeString) {
+-      m_bestSize.IncTo(DoGetBestSize(attr, dc, _(kv.second)));
++    for (const auto& kv : kFieldTypeEngName) {
++      m_bestSize.IncTo(DoGetBestSize(attr, dc, getFieldTypeString(kv.first)));
++    }
++    for (const auto& kv : kFieldTypeMsgId) {
++      m_bestSize.IncTo(DoGetBestSize(attr, dc, getFieldTypeString(kv.first)));
+     }
+   }
+   return m_bestSize;

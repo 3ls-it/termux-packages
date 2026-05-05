@@ -1,0 +1,27 @@
+--- a/src/ui/wxWidgets/AdvancedSelectionDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/AdvancedSelectionDlg.cpp	2026-04-22 23:24:43.034843779 -0400
+@@ -35,12 +35,6 @@
+ 
+ enum {ID_SELECT_SOME = 101, ID_SELECT_ALL, ID_REMOVE_SOME, ID_REMOVE_ALL, ID_LB_AVAILABLE_FIELDS, ID_LB_SELECTED_FIELDS };
+ 
+-BEGIN_EVENT_TABLE( AdvancedSelectionPanel, wxPanel )
+-  EVT_BUTTON( ID_SELECT_SOME, AdvancedSelectionPanel::OnSelectSome )
+-  EVT_BUTTON( ID_SELECT_ALL, AdvancedSelectionPanel::OnSelectAll )
+-  EVT_BUTTON( ID_REMOVE_SOME, AdvancedSelectionPanel::OnRemoveSome )
+-  EVT_BUTTON( ID_REMOVE_ALL, AdvancedSelectionPanel::OnRemoveAll )
+-END_EVENT_TABLE()
+ 
+ AdvancedSelectionPanel::AdvancedSelectionPanel(wxWindow* parentWnd,
+                                                SelectionCriteria* existingCriteria,
+@@ -56,6 +50,11 @@
+ {
+   wxPanel::Create(parentWnd);
+ 
++  Bind(wxEVT_BUTTON, &AdvancedSelectionPanel::OnSelectSome,	this, ID_SELECT_SOME);
++  Bind(wxEVT_BUTTON, &AdvancedSelectionPanel::OnSelectAll,  this, ID_SELECT_ALL);
++  Bind(wxEVT_BUTTON, &AdvancedSelectionPanel::OnRemoveSome,	this, ID_REMOVE_SOME);
++  Bind(wxEVT_BUTTON, &AdvancedSelectionPanel::OnRemoveAll,  this, ID_REMOVE_ALL);
++
+   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
+ 
+   //Subset entries

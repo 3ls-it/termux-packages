@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/SafeCombinationChangeDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SafeCombinationChangeDlg.h	2026-04-29 16:43:38.024696359 -0400
+@@ -66,7 +66,6 @@
+ class SafeCombinationChangeDlg : public wxDialog
+ {
+   DECLARE_CLASS( SafeCombinationChangeDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructors

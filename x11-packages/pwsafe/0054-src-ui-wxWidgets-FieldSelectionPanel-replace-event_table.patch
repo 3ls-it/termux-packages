@@ -1,0 +1,27 @@
+--- a/src/ui/wxWidgets/FieldSelectionPanel.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/FieldSelectionPanel.cpp	2026-04-25 19:02:56.115998985 -0400
+@@ -50,12 +50,6 @@
+   operator CItemData::FieldType() const { return m_ft; }
+ };
+ 
+-BEGIN_EVENT_TABLE( FieldSelectionPanel, wxPanel )
+-  EVT_BUTTON( ID_SELECT_SOME, FieldSelectionPanel::OnSelectSome )
+-  EVT_BUTTON( ID_SELECT_ALL, FieldSelectionPanel::OnSelectAll )
+-  EVT_BUTTON( ID_REMOVE_SOME, FieldSelectionPanel::OnRemoveSome )
+-  EVT_BUTTON( ID_REMOVE_ALL, FieldSelectionPanel::OnRemoveAll )
+-END_EVENT_TABLE()
+ 
+ FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
+                                                             m_lbSelected(nullptr),
+@@ -63,6 +57,11 @@
+ {
+   wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
+ 
++  Bind(wxEVT_BUTTON, &FieldSelectionPanel::OnSelectSome, this, ID_SELECT_SOME);
++  Bind(wxEVT_BUTTON, &FieldSelectionPanel::OnSelectAll, this, ID_SELECT_ALL);
++  Bind(wxEVT_BUTTON, &FieldSelectionPanel::OnRemoveSome, this, ID_REMOVE_SOME);
++  Bind(wxEVT_BUTTON, &FieldSelectionPanel::OnRemoveAll, this, ID_REMOVE_ALL);
++
+   //first and third columns are growable
+   grid->AddGrowableCol(0, 1);
+   grid->AddGrowableCol(2, 1);

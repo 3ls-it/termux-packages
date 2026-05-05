@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/SafeCombinationSetupDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SafeCombinationSetupDlg.h	2026-04-29 14:08:50.724699902 -0400
+@@ -68,7 +68,6 @@
+ #endif
+ {
+   DECLARE_DYNAMIC_CLASS( SafeCombinationSetupDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static SafeCombinationSetupDlg* Create(wxWindow *parent, wxWindowID id = SYMBOL_SAFECOMBINATIONSETUPDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONSETUPDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONSETUPDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONSETUPDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONSETUPDLG_STYLE );

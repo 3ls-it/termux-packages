@@ -1,0 +1,108 @@
+--- a/src/ui/wxWidgets/PWFiltersDateDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersDateDlg.cpp	2026-05-03 18:18:42.639988035 -0400
+@@ -46,25 +46,6 @@
+ IMPLEMENT_CLASS( pwFiltersDateDlg, wxDialog )
+ 
+ /*!
+- * pwFiltersDateDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( pwFiltersDateDlg, wxDialog )
+-
+-  EVT_BUTTON( wxID_OK, pwFiltersDateDlg::OnOk )
+-  EVT_COMBOBOX( ID_COMBOBOX64, pwFiltersDateDlg::OnSelectionChange )
+-  EVT_DATE_CHANGED( ID_DATECTRL65, pwFiltersDateDlg::OnExpDate1Changed )
+-  EVT_DATE_CHANGED( ID_DATECTRL66, pwFiltersDateDlg::OnExpDate2Changed )
+-  EVT_SPINCTRL( ID_SPINCTRL67, pwFiltersDateDlg::OnFNum1Change )
+-  EVT_SPINCTRL( ID_SPINCTRL68, pwFiltersDateDlg::OnFNum2Change )
+-  EVT_RADIOBUTTON(  ID_RADIO_BT_ON, pwFiltersDateDlg::OnRadiobuttonOnSelected )
+-  EVT_RADIOBUTTON(  ID_RADIO_BT_IN, pwFiltersDateDlg::OnRadiobuttonInSelected )
+-  EVT_BUTTON( wxID_CANCEL, pwFiltersDateDlg::OnCancelClick )
+-  EVT_CLOSE( pwFiltersDateDlg::OnClose )
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * pwFiltersDateDlg constructors
+  */
+ 
+@@ -79,7 +60,18 @@
+   Init();
+ 
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+-  wxDialog::Create(parent, wxID_ANY, _("Display Filter Date Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
++  wxDialog::Create(parent, wxID_ANY, wxTRANSLATE("Display Filter Date Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
++
++  Bind(wxEVT_BUTTON, &pwFiltersDateDlg::OnOk, this, wxID_OK);
++  Bind(wxEVT_COMBOBOX, &pwFiltersDateDlg::OnSelectionChange, this, ID_COMBOBOX64);
++  Bind(wxEVT_DATE_CHANGED, &pwFiltersDateDlg::OnExpDate1Changed, this, ID_DATECTRL65);
++  Bind(wxEVT_DATE_CHANGED, &pwFiltersDateDlg::OnExpDate2Changed, this, ID_DATECTRL66);
++  Bind(wxEVT_SPINCTRL, &pwFiltersDateDlg::OnFNum1Change, this, ID_SPINCTRL67);
++  Bind(wxEVT_SPINCTRL, &pwFiltersDateDlg::OnFNum2Change, this, ID_SPINCTRL68);
++  Bind(wxEVT_RADIOBUTTON, &pwFiltersDateDlg::OnRadiobuttonOnSelected, this, ID_RADIO_BT_ON);
++  Bind(wxEVT_RADIOBUTTON, &pwFiltersDateDlg::OnRadiobuttonInSelected, this, ID_RADIO_BT_IN);
++  Bind(wxEVT_BUTTON, &pwFiltersDateDlg::OnCancelClick, this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &pwFiltersDateDlg::OnClose, this);
+ 
+   CreateControls();
+ 
+@@ -540,13 +532,13 @@
+     if (m_fdatetype == PW_DATE_REL) {
+       if (fnum1 >= fnum2) {
+         if(showMessage) {
+-          wxMessageBox(_("Correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
++          wxMessageBox(wxTRANSLATE("Correct numeric values."), wxTRANSLATE("Second number must be greater than first"), wxOK|wxICON_ERROR);
+         }
+         return false;
+       }
+       else if(fnum1 == m_max) {
+         if (showMessage) {
+-          wxMessageBox(_("Correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
++          wxMessageBox(wxTRANSLATE("Correct numeric values."), wxTRANSLATE("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
+         }
+         return false;
+       }
+@@ -554,7 +546,7 @@
+     else {
+       if (fdate1 >= fdate2) {
+         if (showMessage) {
+-          wxMessageBox(_("Please correct date values."), _("Second date must be later than first"), wxOK|wxICON_ERROR);
++          wxMessageBox(wxTRANSLATE("Please correct date values."), wxTRANSLATE("Second date must be later than first"), wxOK|wxICON_ERROR);
+         }
+         return false;
+       }
+@@ -564,14 +556,14 @@
+   if (m_fdatetype == PW_DATE_REL) {
+     if (isRuleSelected(idx, PWSMatch::MR_BEFORE) && (fnum1 == m_min)) {
+       if (showMessage) {
+-        wxMessageBox(_("Correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
++        wxMessageBox(wxTRANSLATE("Correct numeric values."), wxTRANSLATE("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
+       }
+       return false;
+     }
+ 
+     if (isRuleSelected(idx, PWSMatch::MR_AFTER) && (fnum1 == m_max)) {
+       if (showMessage) {
+-        wxMessageBox(_("Correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
++        wxMessageBox(wxTRANSLATE("Correct numeric values."), wxTRANSLATE("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
+       }
+       return false;
+     }
+@@ -579,7 +571,7 @@
+       // All dates, except History must be located in the history
+       if ((fnum1 > 0) || (isRuleSelected(idx, PWSMatch::MR_BETWEEN) && (fnum2 > 0))) {
+         if (showMessage) {
+-          wxMessageBox(_("Correct numeric values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
++          wxMessageBox(wxTRANSLATE("Correct numeric values."), wxTRANSLATE("A future date is not valid for this field"), wxOK|wxICON_ERROR);
+         }
+         return false;
+       }
+@@ -589,7 +581,7 @@
+     // All dates, except History must be located in the history
+     if ((fdate1 > wxDateTime::Now()) || (isRuleSelected(idx, PWSMatch::MR_BETWEEN) && (fdate2 > wxDateTime::Now()))) {
+       if (showMessage) {
+-        wxMessageBox(_("Correct date values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
++        wxMessageBox(wxTRANSLATE("Correct date values."), wxTRANSLATE("A future date is not valid for this field"), wxOK|wxICON_ERROR);
+       }
+       return false;
+     }

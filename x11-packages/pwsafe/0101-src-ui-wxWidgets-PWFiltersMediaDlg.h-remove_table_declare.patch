@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/PWFiltersMediaDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersMediaDlg.h	2026-04-29 18:54:32.856693363 -0400
+@@ -53,7 +53,6 @@
+ class pwFiltersMediaTypesDlg : public QueryCancelDlg
+ {
+   DECLARE_CLASS(pwFiltersMediaTypesDlg)
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static pwFiltersMediaTypesDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes);

@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/ImportTextDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ImportTextDlg.h	2026-04-23 16:01:30.459056119 -0400
+@@ -27,7 +27,6 @@
+ class ImportTextDlg : public wxDialog
+ {
+   DECLARE_CLASS( ImportTextDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static ImportTextDlg* Create(wxWindow *parent, const wxString& filename = wxEmptyString);

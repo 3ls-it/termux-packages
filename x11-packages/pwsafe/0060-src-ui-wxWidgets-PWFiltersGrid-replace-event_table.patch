@@ -1,0 +1,60 @@
+--- a/src/ui/wxWidgets/PWFiltersGrid.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersGrid.cpp	2026-04-26 08:42:07.847427046 -0400
+@@ -59,22 +59,9 @@
+ IMPLEMENT_DYNAMIC_CLASS( pwFiltersGrid, wxGrid )
+ 
+ /*!
+- * pwFiltersGrid event table definition
++ * pwFiltersGrid event type definition
+  */
+-DEFINE_EVENT_TYPE(EVT_SELECT_GRID_ROW)
+-
+-BEGIN_EVENT_TABLE( pwFiltersGrid, wxGrid )
+-
+-////@begin ManageFiltersGrid event table entries
+-#if wxCHECK_VERSION(3, 1, 5)
+-  EVT_GRID_RANGE_SELECTED(pwFiltersGrid::OnGridRangeSelect)
+-#else
+-  EVT_GRID_RANGE_SELECT(pwFiltersGrid::OnGridRangeSelect)
+-#endif
+-  EVT_COMMAND(wxID_ANY, EVT_SELECT_GRID_ROW, pwFiltersGrid::OnAutoSelectGridRow)
+-////@end ManageFiltersGrid event table entries
+-
+-END_EVENT_TABLE()
++wxDEFINE_EVENT(wxEVT_GRID_SELECT_CELL, wxGridEvent);
+ 
+ bool pwFiltersGrid::m_subDialogCalled = false;
+ 
+@@ -102,6 +89,14 @@
+                                                      m_filterpool(filterpool)
+ {
+   Init();
++
++#if wxCHECK_VERSION(3, 1, 5)
++  Bind(wxEVT_GRID_RANGE_SELECTED, &pwFiltersGrid::OnGridRangeSelect, this);
++#else
++  Bind(wxEVT_GRID_RANGE_SELECT, &pwFiltersGrid::OnGridRangeSelect, this);
++#endif
++  Bind(wxEVT_GRID_SELECT_CELL, &pwFiltersGrid::OnAutoSelectGridRow, this);
++
+   CreateControls();
+ }
+ 
+@@ -564,7 +559,7 @@
+ {
+   //select grids asynchronously, or else we get in an infinite loop of selections & their notifications
+   if (evt.Selecting() && m_currentSelection != -1 && evt.GetTopRow() != evt.GetBottomRow() && m_currentSelection != evt.GetTopRow()) { // More than one row selected
+-    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
++    wxCommandEvent cmdEvent(wxEVT_GRID_SELECT_CELL);
+     cmdEvent.SetEventObject(evt.GetEventObject());
+     cmdEvent.SetInt(m_currentSelection);
+     GetEventHandler()->AddPendingEvent(cmdEvent);
+@@ -572,7 +567,7 @@
+ }
+ 
+ /*!
+- * EVT_COMMAND for event handler for EVT_SELECT_GRID_ROW
++ * EVT_COMMAND for event handler for wxEVT_GRID_SELECT_CELL
+  * Clear selection and set selected row to the demanded one
+  */
+ 

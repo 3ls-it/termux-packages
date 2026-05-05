@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/PWFiltersStatusDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersStatusDlg.h	2026-04-29 18:15:59.672694245 -0400
+@@ -51,7 +51,6 @@
+ class pwFiltersStatusDlg : public QueryCancelDlg
+ {
+   DECLARE_CLASS(pwFiltersStatusDlg)
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static pwFiltersStatusDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus);

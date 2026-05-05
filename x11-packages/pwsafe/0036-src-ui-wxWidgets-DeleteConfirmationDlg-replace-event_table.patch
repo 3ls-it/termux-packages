@@ -1,0 +1,34 @@
+--- a/src/ui/wxWidgets/DeleteConfirmationDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/DeleteConfirmationDlg.cpp	2026-04-23 13:47:31.855059186 -0400
+@@ -37,21 +37,6 @@
+ IMPLEMENT_CLASS( DeleteConfirmationDlg, wxDialog )
+ 
+ /*!
+- * DeleteConfirmationDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( DeleteConfirmationDlg, wxDialog )
+-
+-////@begin DeleteConfirmationDlg event table entries
+-  EVT_BUTTON( wxID_YES, DeleteConfirmationDlg::OnYesClick )
+-
+-  EVT_BUTTON( wxID_NO, DeleteConfirmationDlg::OnNoClick )
+-
+-////@end DeleteConfirmationDlg event table entries
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * DeleteConfirmationDlg constructors
+  */
+ 
+@@ -63,6 +48,9 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++  Bind(wxEVT_BUTTON, &DeleteConfirmationDlg::OnYesClick, this, wxID_YES);
++  Bind(wxEVT_BUTTON, &DeleteConfirmationDlg::OnNoClick, this, wxID_NO);
++
+   CreateControls();
+   if (GetSizer())
+   {

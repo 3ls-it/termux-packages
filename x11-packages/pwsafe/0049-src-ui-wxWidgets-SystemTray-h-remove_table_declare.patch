@@ -1,0 +1,11 @@
+--- a/src/ui/wxWidgets/SystemTray.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SystemTray.h	2026-04-23 19:58:17.907050700 -0400
+@@ -56,8 +56,6 @@
+     wxIcon m_IconUnlockedWithID, m_IconLockedWithID;
+     PasswordSafeFrame* m_frame;
+     TrayStatus m_status;
+-
+-    DECLARE_EVENT_TABLE()
+ };
+ 
+ #endif /* _SYSTEMTRAY_H_ */

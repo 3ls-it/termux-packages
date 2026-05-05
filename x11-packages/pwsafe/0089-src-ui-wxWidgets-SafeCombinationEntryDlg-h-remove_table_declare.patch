@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/SafeCombinationEntryDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SafeCombinationEntryDlg.h	2026-04-29 16:29:53.640696674 -0400
+@@ -70,7 +70,6 @@
+ #endif
+ {
+   DECLARE_CLASS( SafeCombinationEntryDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructors

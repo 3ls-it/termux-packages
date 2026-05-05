@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/SyncWizard.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SyncWizard.h	2026-04-23 17:35:55.063053959 -0400
+@@ -49,7 +49,6 @@
+   MultiCommands* GetSyncCommands() const;
+   void OnWizardPageChanging(wxWizardEvent& evt);
+ 
+-  DECLARE_EVENT_TABLE()
+ };
+ 
+ #endif // _SYNCWIZARD_H_

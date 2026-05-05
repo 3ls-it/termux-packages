@@ -1,0 +1,28 @@
+--- a/src/ui/wxWidgets/ManageFiltersDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ManageFiltersDlg.h	2026-04-19 15:18:20.769010394 -0400
+@@ -40,6 +40,9 @@
+ class pwFiltersGrid;
+ ////@end forward declarations
+ 
++// Custom event used by ManageFiltersGrid to request auto-selection of a row.
++wxDECLARE_EVENT(EVT_SELECT_MANAGE_GRID_ROW, wxGridEvent);
++
+ /*!
+  * Control identifiers
+  */
+@@ -76,7 +79,6 @@
+ class ManageFiltersGrid : public wxGrid {
+   
+   DECLARE_CLASS( ManageFiltersGrid )
+-  DECLARE_EVENT_TABLE()
+   
+ public:
+   /// Constructors
+@@ -112,7 +114,6 @@
+ class ManageFiltersDlg: public wxDialog
+ {    
+   DECLARE_DYNAMIC_CLASS( ManageFilters )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static ManageFiltersDlg* Create(wxWindow *parent, PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = nullptr, bool readOnly = true, wxWindowID id = SYMBOL_MANAGEFILTERS_IDNAME, const wxString& caption = SYMBOL_MANAGEFILTERS_TITLE, const wxPoint& pos = SYMBOL_MANAGEFILTERS_POSITION, const wxSize& size = SYMBOL_MANAGEFILTERS_SIZE, long style = SYMBOL_MANAGEFILTERS_STYLE );

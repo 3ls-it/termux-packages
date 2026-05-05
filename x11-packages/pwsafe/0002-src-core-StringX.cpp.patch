@@ -1,0 +1,12 @@
+--- a/src/core/StringX.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/core/StringX.cpp	2026-03-23 08:05:57.470982477 -0400
+@@ -156,7 +156,8 @@
+   cs.LoadString(id);
+   s = cs;
+ #else
+-  s = _(core_st[id]).c_str();
++  wxString tr = wxGetTranslation(wxString(core_st[id]));
++  s = tr.c_str();
+ #endif
+ }
+ 

@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/EditShortcutDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/EditShortcutDlg.h	2026-04-18 20:33:47.676988896 -0400
+@@ -40,7 +40,6 @@
+ class EditShortcutDlg : public QueryCancelDlg
+ {
+   DECLARE_CLASS(EditShortcutDlg)
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+ 

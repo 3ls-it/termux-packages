@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/MergeDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/MergeDlg.h	2026-04-23 14:13:22.791058594 -0400
+@@ -23,7 +23,6 @@
+ class MergeDlg : public wxDialog
+ {
+   DECLARE_CLASS( MergeDlg )
+-  DECLARE_EVENT_TABLE()
+   
+ public:
+   static MergeDlg* Create(wxWindow *parent, PWScore* core, const wxString &filename = wxEmptyString);

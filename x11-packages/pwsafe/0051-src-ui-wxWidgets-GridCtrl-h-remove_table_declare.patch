@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/GridCtrl.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/GridCtrl.h	2026-04-23 20:43:34.363049663 -0400
+@@ -64,7 +64,6 @@
+   typedef std::multimap<wxString, const CItemData*, std::less<wxString> >    AscendingSortedMultimap;
+ 
+   DECLARE_CLASS( GridCtrl )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructors

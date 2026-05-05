@@ -1,0 +1,50 @@
+--- a/src/ui/wxWidgets/ComparisonGridTable.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ComparisonGridTable.cpp	2026-04-26 08:19:26.359427566 -0400
+@@ -505,22 +505,21 @@
+ //////////////////////////////////////////////////////////////////
+ //ComparisonGrid
+ 
+-DEFINE_EVENT_TYPE(EVT_SELECT_GRID_ROW)
+-
+-BEGIN_EVENT_TABLE( ComparisonGrid, wxGrid )
+-#if wxCHECK_VERSION(3, 1, 5)
+-  EVT_GRID_RANGE_SELECTED(ComparisonGrid::OnGridRangeSelect)
+-#else
+-  EVT_GRID_RANGE_SELECT(ComparisonGrid::OnGridRangeSelect)
+-#endif
+-  EVT_COMMAND(wxID_ANY, EVT_SELECT_GRID_ROW, ComparisonGrid::OnAutoSelectGridRow)
+-END_EVENT_TABLE()
++wxDECLARE_EVENT(wxEVT_GRID_SELECT_CELL, wxGridEvent);
+ 
+ ComparisonGrid::ComparisonGrid(wxWindow* parent, wxWindowID id): wxGrid(parent, id)
+ {
+   int horiz, vert;
+   GetRowLabelAlignment(&horiz, &vert);
+   SetRowLabelAlignment(horiz, wxALIGN_BOTTOM);
++
++#if wxCHECK_VERSION(3, 1, 5)
++  Bind(wxEVT_GRID_RANGE_SELECTED, &ComparisonGrid::OnGridRangeSelect, this);
++#else
++  Bind(wxEVT_GRID_RANGE_SELECT, &ComparisonGrid::OnGridRangeSelect, this);
++#endif
++  Bind(wxEVT_GRID_SELECT_CELL, &ComparisonGrid::OnAutoSelectGridRow, this);
++
+ }
+ 
+ bool ComparisonGrid::IsRowSelected(int row) const
+@@ -553,13 +552,13 @@
+ {
+   //select grids asynchronously, or else we get in an infinite loop of selections & their notifications
+   if (evt.GetTopRow()%2 != 0) {
+-    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
++    wxCommandEvent cmdEvent(wxEVT_GRID_SELECT_CELL);
+     cmdEvent.SetEventObject(evt.GetEventObject());
+     cmdEvent.SetInt(evt.GetTopRow()-1);
+     GetEventHandler()->AddPendingEvent(cmdEvent);
+   }
+   if (evt.GetBottomRow()%2 == 0) {
+-    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
++    wxCommandEvent cmdEvent(wxEVT_GRID_SELECT_CELL);
+     cmdEvent.SetEventObject(evt.GetEventObject());
+     cmdEvent.SetInt(evt.GetBottomRow()+1);
+     GetEventHandler()->AddPendingEvent(cmdEvent);

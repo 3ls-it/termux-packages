@@ -1,0 +1,18 @@
+--- a/src/ui/wxWidgets/SelectAliasDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SelectAliasDlg.h	2026-04-27 21:09:48.304756185 -0400
+@@ -58,7 +58,6 @@
+ class SelectTreeCtrl : public TreeCtrlBase
+ {
+   DECLARE_CLASS( SelectTreeCtrl )
+-  DECLARE_EVENT_TABLE()
+   
+ public:
+   /// Constructors
+@@ -111,7 +110,6 @@
+ class SelectAliasDlg : public wxDialog
+ {    
+   DECLARE_DYNAMIC_CLASS( SelectAlias )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static SelectAliasDlg* Create(wxWindow *parent, PWScore *core, CItemData *item, CItemData **pbci,

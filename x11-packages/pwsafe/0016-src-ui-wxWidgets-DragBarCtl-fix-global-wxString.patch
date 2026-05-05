@@ -1,0 +1,64 @@
+--- a/src/ui/wxWidgets/DragBarCtrl.cpp
++++ b/src/ui/wxWidgets/DragBarCtrl.cpp
+@@ -86,7 +86,7 @@
+ 
+ struct DragbarToolInfo {
+   const wxWindowID id;
+-  const wxString name;
++  const char* name_msgid;
+   const char* const* const bitmap;
+   const char* const* const bitmap_disabled;
+   const char* const* const classic_bitmap;
+@@ -94,18 +94,18 @@
+   const CItemData::FieldType field_type;
+ 
+   DragbarToolInfo() :
+-    id(0), name(wxEmptyString),
++    id(0), name_msgid(nullptr),
+     bitmap(nullptr), bitmap_disabled(nullptr),
+     classic_bitmap(nullptr), classic_bitmap_disabled(nullptr),
+     field_type(CItem::FieldType::UNKNOWNFIELDS) {}
+ 
+   DragbarToolInfo(
+-    wxWindowID id, const wxString &name,
++    wxWindowID id, const char* name_msgid,
+     const char* const* bitmap, const char* const* bitmap_disabled,
+     const char* const* classic_bitmap, const char* const* classic_bitmap_disabled,
+     CItemData::FieldType field_type
+   ) :
+-    id(id), name(name),
++    id(id), name_msgid(name_msgid),
+     bitmap(bitmap), bitmap_disabled(bitmap_disabled),
+     classic_bitmap(classic_bitmap), classic_bitmap_disabled(classic_bitmap_disabled),
+     field_type(field_type) {}
+@@ -141,20 +141,21 @@
+   {
+     return (id == ID_DRAGBAR_DND) ?
+       _("Drag this image onto another window to paste the selected element or tree.") :
+-      wxString::Format(_("Drag this image onto another window to paste the '%s' field."), _(name));
++      wxString::Format(_("Drag this image onto another window to paste the '%s' field."),
++                       wxGetTranslation(name_msgid ? name_msgid : ""));
+   }
+ };
+ 
+ std::vector<DragbarToolInfo> DragbarToolInfos =
+   {
+-    { ID_DRAGBAR_GROUP,     _("Group"),     PWS_DRAGBAR_BITMAPS(Group),     CItemData::FieldType::GROUP           },
+-    { ID_DRAGBAR_TITLE,     _("Title"),     PWS_DRAGBAR_BITMAPS(Title),     CItemData::FieldType::TITLE           },
+-    { ID_DRAGBAR_USER,      _("User"),      PWS_DRAGBAR_BITMAPS(User),      CItemData::FieldType::USER            },
+-    { ID_DRAGBAR_PASSWORD,  _("Password"),  PWS_DRAGBAR_BITMAPS(Password),  CItemData::FieldType::PASSWORD        },
+-    { ID_DRAGBAR_NOTES,     _("Notes"),     PWS_DRAGBAR_BITMAPS(Notes),     CItemData::FieldType::NOTES           },
+-    { ID_DRAGBAR_URL,       _("Url"),       PWS_DRAGBAR_BITMAPS(URL),       CItemData::FieldType::URL             },
+-    { ID_DRAGBAR_EMAIL,     _("Email"),     PWS_DRAGBAR_BITMAPS(Email),     CItemData::FieldType::EMAIL           },
+-    { ID_DRAGBAR_DND,       _T("Dnd"),      PWS_DRAGBAR_BITMAPS(Dnd),       CItemData::FieldType::UNKNOWNFIELDS   }
++    { ID_DRAGBAR_GROUP,     "Group",     PWS_DRAGBAR_BITMAPS(Group),     CItemData::FieldType::GROUP           },
++    { ID_DRAGBAR_TITLE,     "Title",     PWS_DRAGBAR_BITMAPS(Title),     CItemData::FieldType::TITLE           },
++    { ID_DRAGBAR_USER,      "User",      PWS_DRAGBAR_BITMAPS(User),      CItemData::FieldType::USER            },
++    { ID_DRAGBAR_PASSWORD,  "Password",  PWS_DRAGBAR_BITMAPS(Password),  CItemData::FieldType::PASSWORD        },
++    { ID_DRAGBAR_NOTES,     "Notes",     PWS_DRAGBAR_BITMAPS(Notes),     CItemData::FieldType::NOTES           },
++    { ID_DRAGBAR_URL,       "Url",       PWS_DRAGBAR_BITMAPS(URL),       CItemData::FieldType::URL             },
++    { ID_DRAGBAR_EMAIL,     "Email",     PWS_DRAGBAR_BITMAPS(Email),     CItemData::FieldType::EMAIL           },
++    { ID_DRAGBAR_DND,       "Dnd",      PWS_DRAGBAR_BITMAPS(Dnd),       CItemData::FieldType::UNKNOWNFIELDS   }
+   };
+ 
+ DragBarCtrl::DragBarCtrl(wxWindow *parent, wxWindowID id, const wxPoint &position, const wxSize &size, long style) : wxAuiToolBar(parent, id, position, size, style)

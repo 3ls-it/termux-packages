@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/version.in
++++ b/src/ui/wxWidgets/version.in
+@@ -46,6 +46,6 @@
+ #define SPECIALBUILD _T("@pwsafe_SPECIALBUILD@")
+ 
+ extern const wxString pwsafeAppName;
+-extern const wxString pwsafeVersionString;
++const wxString& pwsafeGetVersionString();
+ 
+ #endif /* _VERSION_H_ */

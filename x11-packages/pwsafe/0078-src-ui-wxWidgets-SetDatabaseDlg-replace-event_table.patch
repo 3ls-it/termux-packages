@@ -1,0 +1,27 @@
+--- a/src/ui/wxWidgets/SetDatabaseIdDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SetDatabaseIdDlg.cpp	2026-04-28 19:43:41.756725197 -0400
+@@ -32,13 +32,6 @@
+ const wxWindowID SetDatabaseIdDlg::ID_STATICBITMAP_UNLOCKEDICON = wxNewId();
+ //*)
+ 
+-BEGIN_EVENT_TABLE(SetDatabaseIdDlg,wxDialog)
+-    //(*EventTable(SetDatabaseIdDlg)
+-    EVT_BUTTON( wxID_OK, SetDatabaseIdDlg::OnOkClick )
+-    EVT_BUTTON( wxID_CANCEL, SetDatabaseIdDlg::OnCancelClick )
+-    EVT_CLOSE( SetDatabaseIdDlg::OnClose )
+-    //*)
+-END_EVENT_TABLE()
+ 
+ SetDatabaseIdDlg* SetDatabaseIdDlg::Create(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style) {
+   return new SetDatabaseIdDlg(parent, id, caption, pos, size, style);
+@@ -52,6 +45,10 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create(parent, id, caption, pos, size, style);
+ 
++  Bind(wxEVT_BUTTON, &SetDatabaseIdDlg::OnOkClick, this, wxID_OK);
++  Bind(wxEVT_BUTTON, &SetDatabaseIdDlg::OnCancelClick, this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &SetDatabaseIdDlg::OnClose, this);
++
+   CreateControls();
+   if (GetSizer()) {
+     GetSizer()->SetSizeHints(this);

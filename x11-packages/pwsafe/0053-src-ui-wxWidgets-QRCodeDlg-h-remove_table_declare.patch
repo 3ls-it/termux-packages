@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/QRCodeDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/QRCodeDlg.h	2026-04-23 22:18:42.119047486 -0400
+@@ -26,7 +26,6 @@
+ class QRCodeDlg : public wxDialog
+ {
+   DECLARE_CLASS(QRCodeDlg)
+-  DECLARE_EVENT_TABLE()
+ 
+   wxTimer timer;
+   int secondsRemaining;

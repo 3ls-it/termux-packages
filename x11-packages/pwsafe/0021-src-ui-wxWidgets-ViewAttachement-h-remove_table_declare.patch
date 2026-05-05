@@ -1,0 +1,11 @@
+--- a/src/ui/wxWidgets/ViewAttachmentDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ViewAttachmentDlg.h	2026-04-18 16:58:28.672993825 -0400
+@@ -48,8 +48,6 @@
+     //(*Declarations(ViewAttachmentDlg)
+     ImagePanel *m_AttachmentImagePanel;
+     //*)
+-
+-    DECLARE_EVENT_TABLE()
+ };
+ 
+ #endif // _VIEWATTACHMENTDLG_H_

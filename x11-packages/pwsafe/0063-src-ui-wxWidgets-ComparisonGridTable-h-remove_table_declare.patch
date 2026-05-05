@@ -1,0 +1,11 @@
+--- a/src/ui/wxWidgets/ComparisonGridTable.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ComparisonGridTable.h	2026-04-25 22:49:31.775993799 -0400
+@@ -41,8 +41,6 @@
+   // always selected together
+   void OnGridRangeSelect(wxGridRangeSelectEvent& evt);
+   void OnAutoSelectGridRow(wxCommandEvent& evt);
+-
+-  DECLARE_EVENT_TABLE()
+ };
+ 
+ class ComparisonGridTable: public wxGridTableBase

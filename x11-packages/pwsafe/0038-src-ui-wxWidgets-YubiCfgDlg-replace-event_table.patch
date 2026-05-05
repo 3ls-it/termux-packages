@@ -1,0 +1,38 @@
+--- a/src/ui/wxWidgets/YubiCfgDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/YubiCfgDlg.cpp	2026-04-23 13:58:17.567058940 -0400
+@@ -47,23 +47,6 @@
+ IMPLEMENT_CLASS( YubiCfgDlg, wxDialog )
+ 
+ /*!
+- * YubiCfgDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( YubiCfgDlg, wxDialog )
+-
+-////@begin YubiCfgDlg event table entries
+-  EVT_BUTTON( ID_YK_HIDESHOW, YubiCfgDlg::OnYkHideshowClick )
+-
+-  EVT_BUTTON( ID_YK_GENERATE, YubiCfgDlg::OnYkGenerateClick )
+-
+-  EVT_BUTTON( ID_YK_SET, YubiCfgDlg::OnYkSetClick )
+-
+-////@end YubiCfgDlg event table entries
+-EVT_TIMER(POLLING_TIMER_ID, YubiCfgDlg::OnPollingTimer)
+-END_EVENT_TABLE()
+-
+-/*!
+  * YubiCfgDlg constructors
+  */
+ 
+@@ -77,6 +60,11 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++  Bind(wxEVT_BUTTON, &YubiCfgDlg::OnYkHideshowClick, this, ID_YK_HIDESHOW);
++  Bind(wxEVT_BUTTON, &YubiCfgDlg::OnYkGenerateClick, this, ID_YK_GENERATE);
++  Bind(wxEVT_BUTTON, &YubiCfgDlg::OnYkSetClick, this, ID_YK_SET);
++  Bind(wxEVT_TIMER, &YubiCfgDlg::OnPollingTimer, this, POLLING_TIMER_ID);
++
+   CreateControls();
+   if (GetSizer())
+   {

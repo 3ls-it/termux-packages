@@ -1,0 +1,15 @@
+--- a/src/ui/wxWidgets/MenuFileHandlers.cpp
++++ b/src/ui/wxWidgets/MenuFileHandlers.cpp
+@@ -1137,10 +1137,10 @@
+         // TODO -Tell user if any empty groups imported
+       } else {
+-        const TCHAR* cs_validate = numValidated == 1 ? _("entry").c_str() : _("entries").c_str();
+-        const TCHAR* cs_imported = numImported == 1 ? _("entry").c_str() : _("entries").c_str();
+-        cs_temp.Printf(_("Validated %d %ls\n\nImported %d %ls"), numValidated, cs_validate, numImported, cs_imported);
++        const wxString cs_validate = (numValidated == 1) ? _("entry") : _("entries");
++        const wxString cs_imported = (numImported == 1) ? _("entry") : _("entries");
++        cs_temp.Printf(_("Validated %d %ls\n\nImported %d %ls"), numValidated, cs_validate.c_str(), numImported, cs_imported.c_str());
+ 
+         // TODO -Tell user if any empty groups imported
+       }
+

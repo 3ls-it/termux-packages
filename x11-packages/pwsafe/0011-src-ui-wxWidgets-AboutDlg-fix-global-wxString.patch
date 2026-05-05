@@ -1,0 +1,54 @@
+--- a/src/ui/wxWidgets/AboutDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/AboutDlg.cpp	2026-04-22 12:31:30.729245450 -0400
+@@ -40,20 +40,6 @@
+ 
+ IMPLEMENT_CLASS( AboutDlg, wxDialog )
+ 
+-/*!
+- * AboutDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( AboutDlg, wxDialog )
+-
+-  EVT_CLOSE(                       AboutDlg::OnCloseWindow       )
+-  EVT_HYPERLINK( ID_CHECKNEW     , AboutDlg::OnCheckNewClicked   )
+-  EVT_HYPERLINK( ID_SITEHYPERLINK, AboutDlg::OnVisitSiteClicked  )
+-  EVT_BUTTON(    wxID_CLOSE      , AboutDlg::OnCloseClick        )
+-  EVT_THREAD(    wxID_ANY        , AboutDlg::OnDownloadCompleted )
+-
+-END_EVENT_TABLE()
+-
+ wxString AboutDlg::s_VersionData = wxEmptyString;
+ 
+ const wstringT AboutDlg::s_URL_HOME      = L"https://pwsafe.org";
+@@ -74,6 +60,12 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++  Bind(wxEVT_CLOSE_WINDOW, &AboutDlg::OnCloseWindow, this);
++  Bind(wxEVT_HYPERLINK, &AboutDlg::OnCheckNewClicked, this, ID_CHECKNEW);
++  Bind(wxEVT_HYPERLINK, &AboutDlg::OnVisitSiteClicked, this, ID_SITEHYPERLINK);
++  Bind(wxEVT_BUTTON, &AboutDlg::OnCloseClick, this, wxID_CLOSE);
++  Bind(wxEVT_THREAD, &AboutDlg::OnDownloadCompleted, this, wxID_ANY);
++
+   CreateControls();
+   if (GetSizer())
+   {
+@@ -153,7 +145,7 @@
+   wxButton* closeButton = new wxButton(aboutDialog, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0);
+   rightSizer->Add(closeButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+ 
+-  const wxString vstring = pwsafeAppName + L" " + pwsafeVersionString;
++  const wxString vstring = pwsafeAppName + L" " + pwsafeGetVersionString();
+   versionStaticText->SetLabel(vstring);
+   const wxString dstring = _("Build date:") + wxT(" ") + wxT(__DATE__) + wxT(" ") + wxT(__TIME__);
+   buildStaticText->SetLabel(dstring);
+@@ -538,7 +530,7 @@
+     case CheckVersion::CheckStatus::NEWER_AVAILABLE:
+     {
+       wxString newer(_("Current version: "));
+-      newer << pwsafeVersionString << L"\n";
++      newer << pwsafeGetVersionString() << L"\n";
+       newer << _("Latest version:\t") << latest.c_str() << L"\n\n";
+       newer << _("Visit the Password Safe website to download the latest version.");
+       const wxString cs_title(_("Newer Version Found!"));

@@ -1,0 +1,22 @@
+--- a/src/ui/wxWidgets/MergeDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/MergeDlg.cpp	2026-04-23 14:18:30.995058477 -0400
+@@ -35,10 +35,6 @@
+ 
+ IMPLEMENT_CLASS( MergeDlg, wxDialog )
+ 
+-BEGIN_EVENT_TABLE( MergeDlg, wxDialog )
+-  EVT_BUTTON( ID_ADVANCED,  MergeDlg::OnAdvancedSelection )
+-END_EVENT_TABLE()
+-
+ MergeDlg::MergeDlg(wxWindow *parent, PWScore* core, const wxString& filename) :
+                       wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
+                       m_core(core), m_selection(new SelectionCriteria), m_dbPanel(nullptr)
+@@ -51,6 +47,8 @@
+ 
+   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
+ 
++  Bind(wxEVT_BUTTON, &MergeDlg::OnAdvancedSelection, this, ID_ADVANCED);
++
+   //4th arg = true means the panel validates automatically
+   m_dbPanel = new DbSelectionPanel(this, filePrompt, filePickerCtrlTitle, true, core, 2, wxID_OK, filename);
+ 

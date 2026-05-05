@@ -1,0 +1,117 @@
+--- a/src/ui/wxWidgets/ManageFiltersDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ManageFiltersDlg.cpp	2026-05-03 11:37:38.591997215 -0400
+@@ -50,28 +50,26 @@
+ IMPLEMENT_CLASS( ManageFiltersGrid, wxGrid )
+ 
+ /*!
+- * ManageFiltersGrid event table definition
++ * ManageFiltersGrid event type
+  */
+-DEFINE_EVENT_TYPE(EVT_SELECT_MANAGE_GRID_ROW)
++wxDEFINE_EVENT(EVT_SELECT_MANAGE_GRID_ROW, wxGridEvent);
+ 
+-BEGIN_EVENT_TABLE( ManageFiltersGrid, wxGrid )
+ 
+-////@begin ManageFiltersGrid event table entries
++ManageFiltersGrid::ManageFiltersGrid(wxWindow* parent, pwSortedManageFilters *data, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) : m_pMapFilterData(data)
++{
++  Init();
++  Create(parent, id, pos, size, style);
++  
+ #if wxCHECK_VERSION(3, 1, 5)
+-  EVT_GRID_RANGE_SELECTED(ManageFiltersGrid::OnGridRangeSelect)
++  Bind(wxEVT_GRID_RANGE_SELECTED, &ManageFiltersGrid::OnGridRangeSelect, this);
+ #else
+-  EVT_GRID_RANGE_SELECT(ManageFiltersGrid::OnGridRangeSelect)
++  Bind(wxEVT_GRID_RANGE_SELECT, &ManageFiltersGrid::OnGridRangeSelect, this);
+ #endif
+-  EVT_COMMAND(wxID_ANY, EVT_SELECT_MANAGE_GRID_ROW, ManageFiltersGrid::OnAutoSelectGridRow)
+-  EVT_CHAR_HOOK(ManageFiltersGrid::OnChar)
+-////@end ManageFiltersGrid event table entries
++  Bind(EVT_SELECT_MANAGE_GRID_ROW, &ManageFiltersGrid::OnAutoSelectGridRow, this);
++  Bind(wxEVT_CHAR_HOOK, &ManageFiltersGrid::OnChar, this);
+ 
+-END_EVENT_TABLE()
++  BindEvents();
+ 
+-ManageFiltersGrid::ManageFiltersGrid(wxWindow* parent, pwSortedManageFilters *data, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) : m_pMapFilterData(data)
+-{
+-  Init();
+-  Create(parent, id, pos, size, style);
+ #ifdef PW_FILTERS_GIRD_USE_NATIVE_HEADER
+   //column picker is free if built with wx2.9.1
+ #if wxCHECK_VERSION(2, 9, 1)
+@@ -192,30 +190,6 @@
+ IMPLEMENT_DYNAMIC_CLASS( ManageFiltersDlg, wxDialog )
+ 
+ /*!
+- * ManageFiltersDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( ManageFiltersDlg, wxDialog )
+-
+-////@begin ManageFiltersDlg event table entries
+-  EVT_GRID_CELL_LEFT_CLICK( ManageFiltersDlg::OnCellLeftClick )
+-
+-  EVT_BUTTON( wxID_NEW, ManageFiltersDlg::OnNewClick )
+-  EVT_BUTTON( ID_EDIT, ManageFiltersDlg::OnEditClick )
+-  EVT_BUTTON( wxID_COPY, ManageFiltersDlg::OnCopyClick )
+-  EVT_BUTTON( wxID_DELETE, ManageFiltersDlg::OnDeleteClick )
+-  EVT_BUTTON( ID_IMPORT, ManageFiltersDlg::OnImportClick )
+-  EVT_BUTTON( ID_EXPORT, ManageFiltersDlg::OnExportClick )
+-  EVT_BUTTON( wxID_HELP, ManageFiltersDlg::OnHelpClick )
+-  EVT_BUTTON( wxID_CLOSE, ManageFiltersDlg::OnCloseClick )
+-
+-  EVT_SIZE( ManageFiltersDlg::OnSize )
+-////@end ManageFiltersDlg event table entries
+-
+-END_EVENT_TABLE()
+-
+-
+-/*!
+  * ManageFiltersDlg constructors
+  */
+ 
+@@ -251,6 +225,18 @@
+   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++  // Buttons
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnNewClick,    this, wxID_NEW);
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnEditClick,   this, ID_EDIT);
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnCopyClick,   this, wxID_COPY);
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnDeleteClick, this, wxID_DELETE);
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnImportClick, this, ID_IMPORT);
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnExportClick, this, ID_EXPORT);
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnHelpClick,   this, wxID_HELP);
++  Bind(wxEVT_BUTTON, &ManageFiltersDlg::OnCloseClick,  this, wxID_CLOSE);
++  // Size
++  Bind(wxEVT_SIZE, &ManageFiltersDlg::OnSize, this);
++
+   CreateControls();
+   if (GetSizer())
+   {
+@@ -302,6 +288,8 @@
+   
+   m_MapFiltersGrid = new ManageFiltersGrid( itemDialog1, &m_MapFilterData, ID_FILTERSGRID, wxDefaultPosition,
+                         wxDefaultSize, wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL|wxEXPAND );
++
++  m_MapFiltersGrid->Bind(wxEVT_GRID_CELL_LEFT_CLICK, &ManageFiltersDlg::OnCellLeftClick, this);
+   
+   m_MapFiltersGrid->SetTable(new pwManageFiltersTable(m_MapFilterData.Data()), true, wxGrid::wxGridSelectRows); // true => auto-delete
+   
+@@ -1039,7 +1027,14 @@
+   wxAsker asker;
+   
+   // Build default file name
++  // On GTK/wxWidgets in Termux/Android, preselecting a default filename can
++  // trigger a GTK file chooser path that AddressSanitizer reports as a UAF.
++  // Avoid preselecting a filename; just set the directory.
++#ifdef __ANDROID__
++  wxFileName TxtFileName(wxEmptyString);
++#else
+   wxFileName TxtFileName(towxstring(PWSUtil::GetNewFileName(stringx2std(m_core->GetCurFile()) + wxT(".") + wxT("filters"), wxT("xml"))));
++#endif
+   // Ask for file name
+   wxFileDialog fd(this, _("Choose an XML File to Import"), TxtFileName.GetPath(),
+                   TxtFileName.GetFullName(), _("XML files (*.xml)|*.xml"),

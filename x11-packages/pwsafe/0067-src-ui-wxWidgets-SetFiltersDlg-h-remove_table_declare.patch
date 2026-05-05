@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/SetFiltersDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SetFiltersDlg.h	2026-04-26 21:13:48.853881292 -0400
+@@ -62,7 +62,6 @@
+ class SetFiltersDlg: public QueryCancelDlg
+ {    
+   DECLARE_DYNAMIC_CLASS( SetFilters )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static SetFiltersDlg* Create(wxWindow *parent, st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,

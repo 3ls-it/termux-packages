@@ -1,0 +1,32 @@
+--- a/src/ui/wxWidgets/EditShortcutDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/EditShortcutDlg.cpp	2026-04-19 13:01:10.153013534 -0400
+@@ -45,18 +45,6 @@
+ IMPLEMENT_CLASS( EditShortcutDlg, wxDialog )
+ 
+ /*!
+- * EditShortcutDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( EditShortcutDlg, wxDialog )
+-
+-  EVT_BUTTON( wxID_OK, EditShortcutDlg::OnOk )
+-  EVT_CLOSE( EditShortcutDlg::OnClose )
+-  EVT_BUTTON( wxID_CANCEL, EditShortcutDlg::OnCancelClick )
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * EditShortcutDlg constructors
+  */
+ 
+@@ -69,6 +57,10 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create(parent, wxID_ANY, _("Edit Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+ 
++  Bind(wxEVT_BUTTON,       &EditShortcutDlg::OnOk,         this, wxID_OK);
++  Bind(wxEVT_BUTTON,       &EditShortcutDlg::OnCancelClick,               this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &EditShortcutDlg::OnClose,                     this);
++
+   CreateControls();
+ 
+   // Allow to resize the dialog in width, only.

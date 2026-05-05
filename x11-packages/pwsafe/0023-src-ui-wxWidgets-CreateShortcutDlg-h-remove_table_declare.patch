@@ -1,0 +1,20 @@
+--- a/src/ui/wxWidgets/CreateShortcutDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/CreateShortcutDlg.h	2026-04-30 09:59:27.136672651 -0400
+@@ -40,7 +40,6 @@
+ class CreateShortcutDlg : public QueryCancelDlg
+ {
+   DECLARE_CLASS(CreateShortcutDlg)
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Creation
+@@ -86,6 +85,9 @@
+   
+   //(*Handlers(CreateShortcutDlg)
+   void OnOk(wxCommandEvent& event);
++  // Added missing handlers for Termux/Android port
++  void OnCancelClick(wxCommandEvent& event);
++  void OnClose(wxCloseEvent& event);
+   //*)
+ 
+   //(*Identifiers(CreateShortcutDlg)

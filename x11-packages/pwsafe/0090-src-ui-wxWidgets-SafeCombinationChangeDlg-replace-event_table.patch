@@ -1,0 +1,42 @@
+--- a/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp	2026-04-29 16:43:28.064696363 -0400
+@@ -44,24 +44,6 @@
+ IMPLEMENT_CLASS( SafeCombinationChangeDlg, wxDialog )
+ 
+ /*!
+- * SafeCombinationChangeDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( SafeCombinationChangeDlg, wxDialog )
+-
+-////@begin SafeCombinationChangeDlg event table entries
+-#ifndef NO_YUBI
+-  EVT_BUTTON( ID_YUBIBTN,                   SafeCombinationChangeDlg::OnYubibtnClick  )
+-  EVT_BUTTON( ID_YUBIBTN2,                  SafeCombinationChangeDlg::OnYubibtn2Click )
+-  EVT_TIMER(  YubiMixin::POLLING_TIMER_ID,  SafeCombinationChangeDlg::OnPollingTimer  )
+-#endif
+-  EVT_BUTTON( wxID_OK,                      SafeCombinationChangeDlg::OnOkClick       )
+-  EVT_BUTTON( wxID_CANCEL,                  SafeCombinationChangeDlg::OnCancelClick   )
+-
+-////@end SafeCombinationChangeDlg event table entries
+-END_EVENT_TABLE()
+-
+-/*!
+  * SafeCombinationChangeDlg constructors
+  */
+ 
+@@ -76,6 +58,14 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++#ifndef NO_YUBI
++  Bind(wxEVT_BUTTON, &SafeCombinationChangeDlg::OnYubibtnClick, this, ID_YUBIBTN);
++  Bind(wxEVT_BUTTON, &SafeCombinationChangeDlg::OnYubibtn2Click, this, ID_YUBIBTN2);
++  Bind(wxEVT_TIMER, &SafeCombinationChangeDlg::OnPollingTimer, this, YubiMixin::POLLING_TIMER_ID);
++#endif
++  Bind(wxEVT_BUTTON, &SafeCombinationChangeDlg::OnOkClick, this, wxID_OK);
++  Bind(wxEVT_BUTTON, &SafeCombinationChangeDlg::OnCancelClick, this, wxID_CANCEL);
++
+   CreateControls();
+   if (GetSizer())
+   {

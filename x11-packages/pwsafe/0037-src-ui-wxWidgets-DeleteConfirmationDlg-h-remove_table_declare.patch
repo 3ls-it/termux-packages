@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/DeleteConfirmationDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/DeleteConfirmationDlg.h	2026-04-23 13:48:52.667059155 -0400
+@@ -53,7 +53,6 @@
+ class DeleteConfirmationDlg : public wxDialog
+ {
+   DECLARE_CLASS( DeleteConfirmationDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Creation

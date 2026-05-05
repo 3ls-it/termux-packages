@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/CompareDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/CompareDlg.h	2026-04-23 11:20:20.275062555 -0400
+@@ -84,7 +84,6 @@
+   CReport            m_compReport;
+   wxButton*          m_compareButton = nullptr;
+ 
+-  DECLARE_EVENT_TABLE()
+ };
+ 
+ #endif /* _COMPAREDLG_H_ */

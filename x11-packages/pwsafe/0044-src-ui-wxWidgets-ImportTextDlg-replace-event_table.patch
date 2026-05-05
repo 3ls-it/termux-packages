@@ -1,0 +1,12 @@
+--- a/src/ui/wxWidgets/ImportTextDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ImportTextDlg.cpp	2026-04-23 16:03:20.111056078 -0400
+@@ -49,9 +49,6 @@
+ 
+ IMPLEMENT_CLASS( ImportTextDlg, wxDialog )
+ 
+-BEGIN_EVENT_TABLE( ImportTextDlg, wxDialog )
+-END_EVENT_TABLE()
+-
+ ImportTextDlg::ImportTextDlg(wxWindow *parent, const wxString& filename) :  wxDialog(parent,
+                                                             wxID_ANY,
+                                                             _("Import Text Settings"),

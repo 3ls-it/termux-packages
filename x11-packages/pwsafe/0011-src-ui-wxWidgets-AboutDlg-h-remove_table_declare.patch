@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/AboutDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/AboutDlg.h	2026-04-22 10:27:42.149248283 -0400
+@@ -64,7 +64,6 @@
+ class AboutDlg : public wxDialog, public wxThreadHelper
+ {
+   DECLARE_CLASS( AboutDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+   void CompareVersionData();
+   bool CheckDatabaseStatus();

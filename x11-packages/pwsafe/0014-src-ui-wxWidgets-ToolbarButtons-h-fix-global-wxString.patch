@@ -1,0 +1,141 @@
+--- a/src/ui/wxWidgets/ToolbarButtons.h
++++ b/src/ui/wxWidgets/ToolbarButtons.h
+@@ -13,6 +13,9 @@
+ #ifndef _TOOLBARBUTTONS_H_
+ #define _TOOLBARBUTTONS_H_
+ 
++#include <wx/string.h>
++#include <wx/translation.h>
++
+ #include "./graphics/toolbar/new/new.xpm"
+ #include "./graphics/toolbar/new/new_disabled.xpm"
+ #include "./graphics/toolbar/new/open.xpm"
+@@ -186,12 +189,12 @@
+                                 wxCONCAT(wxCONCAT(n, _disabled), _xpm),         \
+                                 wxCONCAT(wxCONCAT(classic_, n), _xpm),          \
+                                 wxCONCAT(wxCONCAT(classic_, n), _disabled_xpm)
+-#define SEPARATOR {ID_SEPARATOR, wxEmptyString, wxEmptyString, nullptr, nullptr, nullptr, nullptr}
++#define SEPARATOR {ID_SEPARATOR, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}
+ 
+ struct _PwsToolbarInfo {
+   int id;
+-  const wxString toollabel;
+-  const wxString tooltip;
++  const char* toollabel_msgid;
++  const char* tooltip_msgid;
+   const char* const* const bitmap_normal;
+   const char* const* const bitmap_disabled;
+   const char* const* const bitmap_classic;
+@@ -207,6 +210,16 @@
+     return PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+   }
+ 
++  wxString GetToolLabel() const
++  {
++    return toollabel_msgid ? wxGetTranslation(toollabel_msgid) : wxString();
++  }
++
++  wxString GetToolTip() const
++  {
++    return tooltip_msgid ? wxGetTranslation(tooltip_msgid) : wxString();
++  }
++
+   /**
+    * Provides the bitmap that represents an enabled toolbar item in the new or classic style, depending on user preferences.
+    * @return toolbar item bitmap
+@@ -225,45 +238,65 @@
+     return UseNewToolbarStyle() ? bitmap_disabled : bitmap_classic_disabled;
+   }
+ 
+-  // Following ctor's required to shut up some compiler warnings
+-_PwsToolbarInfo() : id(0), toollabel(wxEmptyString), tooltip(wxEmptyString), bitmap_normal(nullptr), bitmap_disabled(nullptr),
+-    bitmap_classic(nullptr), bitmap_classic_disabled(nullptr) {}
+-_PwsToolbarInfo(int aid, const wxString &atoollabel, const wxString &atooltip, const char* const* abitmap_normal,
+-                const char* const* abitmap_disabled, const char* const* abitmap_classic, const char* const* abitmap_classic_disabled) :
+-  id(aid), toollabel(atoollabel), tooltip(atooltip), bitmap_normal(abitmap_normal), bitmap_disabled(abitmap_disabled),
+-    bitmap_classic(abitmap_classic), bitmap_classic_disabled(abitmap_classic_disabled) {}
+-} PwsToolbarButtons[] =
++// Following ctor's required to shut up some compiler warnings
++_PwsToolbarInfo() :
++    id(0),
++    toollabel_msgid(nullptr),
++    tooltip_msgid(nullptr),
++    bitmap_normal(nullptr),
++    bitmap_disabled(nullptr),
++    bitmap_classic(nullptr),
++    bitmap_classic_disabled(nullptr)
++{}
++
++_PwsToolbarInfo(int aid, const char* atoollabel,
++				const char* atooltip,
++				const char* const* abitmap_normal,
++                const char* const* abitmap_disabled,
++				const char* const* abitmap_classic,
++				const char* const* abitmap_classic_disabled) :
++		id(aid),
++		toollabel_msgid(atoollabel),
++		tooltip_msgid(atooltip),
++		bitmap_normal(abitmap_normal),
++		bitmap_disabled(abitmap_disabled),
++		bitmap_classic(abitmap_classic),
++		bitmap_classic_disabled(abitmap_classic_disabled)
++{}
++
++};
+ 
++static const _PwsToolbarInfo PwsToolbarButtons[] =
+ {
+-          { wxID_NEW,          _("New"),             _("Make New Database"),            PWS_TOOLBAR_BITMAPS(new)            },
+-          { wxID_OPEN,         _("Open"),            _("Open Another Database"),        PWS_TOOLBAR_BITMAPS(open)           },
+-          { wxID_CLOSE,        _("Close"),           _("Close Database"),               PWS_TOOLBAR_BITMAPS(close)          },
+-          { ID_LOCK_SAFE,      _("Lock"),            _("Lock Database"),                PWS_TOOLBAR_BITMAPS(lock)           },
+-          { ID_UNLOCK_SAFE,    _("Unlock"),          _("Unlock Database"),              PWS_TOOLBAR_BITMAPS(unlock)         },
+-          { wxID_SAVE,         _("Save"),            _("Save Database"),                PWS_TOOLBAR_BITMAPS(save)           },
++          { wxID_NEW,          "New",             "Make New Database",            PWS_TOOLBAR_BITMAPS(new)            },
++          { wxID_OPEN,         "Open",            "Open Another Database",        PWS_TOOLBAR_BITMAPS(open)           },
++          { wxID_CLOSE,        "Close",           "Close Database",               PWS_TOOLBAR_BITMAPS(close)          },
++          { ID_LOCK_SAFE,      "Lock",            "Lock Database",                PWS_TOOLBAR_BITMAPS(lock)           },
++          { ID_UNLOCK_SAFE,    "Unlock",          "Unlock Database",              PWS_TOOLBAR_BITMAPS(unlock)         },
++          { wxID_SAVE,         "Save",            "Save Database",                PWS_TOOLBAR_BITMAPS(save)           },
+           SEPARATOR,
+-          { ID_COPYPASSWORD,   _("Password"),        _("Copy Password to Clipboard"),   PWS_TOOLBAR_BITMAPS(copypassword)   },
+-          { ID_COPYUSERNAME,   _("Username"),        _("Copy Username to Clipboard"),   PWS_TOOLBAR_BITMAPS(copyuser)       },
+-          { ID_COPYAUTHCODE,   _("Auth Code"),       _("Copy Auth Code to Clipboard"),  PWS_TOOLBAR_BITMAPS(copyauthcode)   },
+-          { ID_SHOWAUTHCODE,   _("Display Auth"),    _("Display Auth Code"),            PWS_TOOLBAR_BITMAPS(displayauthcode)},
+-          { ID_COPYNOTESFLD,   _("Notes"),           _("Copy Notes to Clipboard"),      PWS_TOOLBAR_BITMAPS(copynotes)      },
+-          { ID_CLEARCLIPBOARD, _("Clr Clipboard"),   _("Clear the clipboard contents"), PWS_TOOLBAR_BITMAPS(clearclipboard) },
++          { ID_COPYPASSWORD,   "Password",        "Copy Password to Clipboard",   PWS_TOOLBAR_BITMAPS(copypassword)   },
++          { ID_COPYUSERNAME,   "Username",        "Copy Username to Clipboard",   PWS_TOOLBAR_BITMAPS(copyuser)       },
++          { ID_COPYAUTHCODE,   "Auth Code",       "Copy Auth Code to Clipboard",  PWS_TOOLBAR_BITMAPS(copyauthcode)   },
++          { ID_SHOWAUTHCODE,   "Display Auth",    "Display Auth Code",            PWS_TOOLBAR_BITMAPS(displayauthcode)},
++          { ID_COPYNOTESFLD,   "Notes",           "Copy Notes to Clipboard",      PWS_TOOLBAR_BITMAPS(copynotes)      },
++          { ID_CLEARCLIPBOARD, "Clr Clipboard",   "Clear the clipboard contents", PWS_TOOLBAR_BITMAPS(clearclipboard) },
+           SEPARATOR,
+-          { ID_AUTOTYPE,       _("Autotype"),        _("Perform Autotype"),             PWS_TOOLBAR_BITMAPS(autotype)       },
+-          { ID_BROWSEURL,      _("Browse URL"),      _("Browse to URL"),                PWS_TOOLBAR_BITMAPS(browseurl)      },
+-          { ID_SENDEMAIL,      _("Send Email"),      _("Send Email"),                   PWS_TOOLBAR_BITMAPS(sendemail)      },
++          { ID_AUTOTYPE,       "Autotype",        "Perform Autotype",             PWS_TOOLBAR_BITMAPS(autotype)       },
++          { ID_BROWSEURL,      "Browse URL",      "Browse to URL",                PWS_TOOLBAR_BITMAPS(browseurl)      },
++          { ID_SENDEMAIL,      "Send Email",      "Send Email",                   PWS_TOOLBAR_BITMAPS(sendemail)      },
+           SEPARATOR,
+-          { wxID_ADD,          _("Add"),             _("Add New Entry"),                PWS_TOOLBAR_BITMAPS(add)            },
+-          { ID_EDIT,           _("Edit"),            _("Edit an Entry"),                PWS_TOOLBAR_BITMAPS(viewedit)       },
++          { wxID_ADD,          "Add",             "Add New Entry",                PWS_TOOLBAR_BITMAPS(add)            },
++          { ID_EDIT,           "Edit",            "Edit an Entry",                PWS_TOOLBAR_BITMAPS(viewedit)       },
+           SEPARATOR,
+-          { wxID_DELETE,       _("Delete"),          _("Delete an Entry"),              PWS_TOOLBAR_BITMAPS(delete)         },
++          { wxID_DELETE,       "Delete",          "Delete an Entry",              PWS_TOOLBAR_BITMAPS(delete)         },
+           SEPARATOR,
+-          { ID_EXPANDALL,      _("Expand"),          _("Expand All"),                   PWS_TOOLBAR_BITMAPS(expandall)      },
+-          { ID_COLLAPSEALL,    _("Collapse"),        _("Collapse All"),                 PWS_TOOLBAR_BITMAPS(collapseall)    },
++          { ID_EXPANDALL,      "Expand",          "Expand All",                   PWS_TOOLBAR_BITMAPS(expandall)      },
++          { ID_COLLAPSEALL,    "Collapse",        "Collapse All",                 PWS_TOOLBAR_BITMAPS(collapseall)    },
+           SEPARATOR,
+-          { wxID_PREFERENCES,  _("Options"),         _("Options"),                      PWS_TOOLBAR_BITMAPS(options)        },
++          { wxID_PREFERENCES,  "Options",         "Options",                      PWS_TOOLBAR_BITMAPS(options)        },
+           SEPARATOR,
+-          { wxID_HELP,         _("Help"),            _("Help"),                         PWS_TOOLBAR_BITMAPS(help)           }
++          { wxID_HELP,         "Help",            "Help",                         PWS_TOOLBAR_BITMAPS(help)           }
+ };
+ 
+ #undef SEPARATOR

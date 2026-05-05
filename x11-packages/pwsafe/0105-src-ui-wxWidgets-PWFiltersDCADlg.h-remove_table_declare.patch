@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/PWFiltersDCADlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersDCADlg.h	2026-04-29 19:08:21.972693046 -0400
+@@ -51,7 +51,6 @@
+ class pwFiltersDCADlg : public QueryCancelDlg
+ {
+   DECLARE_CLASS(pwFiltersDCADlg)
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   static pwFiltersDCADlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, short *fdca);

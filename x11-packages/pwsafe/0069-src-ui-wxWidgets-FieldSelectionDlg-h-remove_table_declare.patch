@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/FieldSelectionDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/FieldSelectionDlg.h	2026-04-26 21:43:32.937880612 -0400
+@@ -24,7 +24,6 @@
+ 
+ class FieldSelectionDlg : public wxDialog
+ {
+-  DECLARE_EVENT_TABLE()
+ public:
+   static FieldSelectionDlg* Create(wxWindow *parent, const CItemData::FieldType* available, size_t navail,
+                     const CItemData::FieldType* mandatory, size_t nmandatory,

@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/OptionsPropertySheetDlg.h	2026-04-28 15:02:25.528731635 -0400
++++ b/src/ui/wxWidgets/OptionsPropertySheetDlg.h	2026-04-28 15:02:43.328731628 -0400
+@@ -146,7 +146,6 @@
+ class OptionsPropertySheetDlg : public wxPropertySheetDialog
+ {
+   DECLARE_CLASS( OptionsPropertySheetDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructors

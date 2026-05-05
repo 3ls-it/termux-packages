@@ -1,0 +1,53 @@
+--- a/src/ui/wxWidgets/CompareDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/CompareDlg.cpp	2026-04-23 11:24:07.627062468 -0400
+@@ -54,26 +54,9 @@
+   ID_DELETE_ITEMS_FROM_CURRENT_DB
+ };
+ 
+-DEFINE_EVENT_TYPE(EVT_START_COMPARISON)
++wxDEFINE_EVENT(EVT_START_COMPARISON, wxCommandEvent);
+ 
+-DEFINE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS)
+-
+-BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
+-  EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
+-  EVT_BUTTON( ID_BTN_REPORT,  CompareDlg::OnShowReport )
+-  EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
+-  EVT_MENU(ID_EDIT_IN_CURRENT_DB, CompareDlg::OnEditInCurrentDB)
+-  EVT_MENU(ID_VIEW_IN_COMPARISON_DB, CompareDlg::OnViewInComparisonDB)
+-  EVT_COMMAND(wxID_ANY, EVT_EXPAND_DATA_PANELS, CompareDlg::OnExpandDataPanels)
+-  EVT_COMMAND(wxID_ANY, EVT_START_COMPARISON, CompareDlg::DoCompare)
+-  EVT_MENU(ID_COPY_ITEMS_TO_CURRENT_DB, CompareDlg::OnCopyItemsToCurrentDB)
+-  EVT_MENU(ID_DELETE_ITEMS_FROM_CURRENT_DB, CompareDlg::OnDeleteItemsFromCurrentDB)
+-  EVT_MENU(ID_COPY_FIELD_TO_CURRENT_DB, CompareDlg::OnCopyFieldsToCurrentDB)
+-  EVT_MENU(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
+-  EVT_MENU(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
+-
+-  EVT_UPDATE_UI( ID_BTN_REPORT, CompareDlg::OnUpdateUI )
+-END_EVENT_TABLE()
++wxDEFINE_EVENT(EVT_EXPAND_DATA_PANELS, wxCommandEvent);
+ 
+ struct ComparisonData {
+   wxCollapsiblePane* pane;
+@@ -111,6 +94,21 @@
+   //compare all fields by default
+   m_selCriteria->SelectAllFields();
+ 
++  Bind(wxEVT_BUTTON, &CompareDlg::OnCompare, this, ID_BTN_COMPARE);
++  Bind(wxEVT_BUTTON, &CompareDlg::OnShowReport, this, ID_BTN_REPORT);
++  // TODO: for EVT_GRID_CELL_RIGHT_CLICK:   EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
++  Bind(wxEVT_GRID_CELL_RIGHT_CLICK, &CompareDlg::OnGridCellRightClick, this);
++  Bind(wxEVT_MENU, &CompareDlg::OnEditInCurrentDB, this, ID_EDIT_IN_CURRENT_DB);
++  Bind(wxEVT_MENU, &CompareDlg::OnViewInComparisonDB, this, ID_VIEW_IN_COMPARISON_DB);
++  Bind(EVT_EXPAND_DATA_PANELS, &CompareDlg::OnExpandDataPanels, this);
++  Bind(EVT_START_COMPARISON, &CompareDlg::DoCompare, this);
++  Bind(wxEVT_MENU, &CompareDlg::OnCopyItemsToCurrentDB, this, ID_COPY_ITEMS_TO_CURRENT_DB);
++  Bind(wxEVT_MENU, &CompareDlg::OnDeleteItemsFromCurrentDB, this, ID_DELETE_ITEMS_FROM_CURRENT_DB);
++  Bind(wxEVT_MENU, &CompareDlg::OnCopyFieldsToCurrentDB, this, ID_COPY_FIELD_TO_CURRENT_DB);
++  Bind(wxEVT_MENU, &CompareDlg::OnSyncItemsWithCurrentDB, this, ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
++  Bind(wxEVT_MENU, &CompareDlg::OnSyncItemsWithCurrentDB, this, ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
++  Bind(wxEVT_UPDATE_UI, &CompareDlg::OnUpdateUI, this, ID_BTN_REPORT);
++
+   CreateControls();
+ }
+ 

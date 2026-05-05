@@ -1,0 +1,205 @@
+--- a/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp	2026-04-28 15:17:01.632731300 -0400
+@@ -60,85 +60,26 @@
+ 
+ IMPLEMENT_CLASS( OptionsPropertySheetDlg, wxPropertySheetDialog )
+ 
+-/*!
+- * OptionsPropertySheetDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( OptionsPropertySheetDlg, wxPropertySheetDialog )
+-  EVT_BUTTON(      wxID_OK,            OptionsPropertySheetDlg::OnOk )
+-
+-////@begin OptionsPropertySheetDlg event table entries
+-  EVT_CHECKBOX(    ID_CHECKBOX11,      OptionsPropertySheetDlg::OnBackupB4SaveClick )
+-  EVT_RADIOBUTTON( ID_RADIOBUTTON4,    OptionsPropertySheetDlg::OnBuPrefix )
+-  EVT_RADIOBUTTON( ID_RADIOBUTTON5,    OptionsPropertySheetDlg::OnBuPrefix )
+-  EVT_COMBOBOX(    ID_COMBOBOX2,       OptionsPropertySheetDlg::OnSuffixCBSet )
+-  EVT_BUTTON(      ID_BUTTON,          OptionsPropertySheetDlg::OnBuDirBrowseClick )
+-  EVT_CHECKBOX(    ID_CHECKBOX13,      OptionsPropertySheetDlg::OnShowUsernameInTreeCB )
+-  EVT_CHECKBOX(    ID_CHECKBOX19,      OptionsPropertySheetDlg::OnPreExpiryWarnClick )
+-  EVT_CHECKBOX(    ID_CHECKBOX24,      OptionsPropertySheetDlg::OnUseDefaultUserClick )
+-  EVT_BUTTON(      ID_BUTTON8,         OptionsPropertySheetDlg::OnBrowseLocationClick )
+-  EVT_BUTTON(      ID_PWHISTAPPLY,     OptionsPropertySheetDlg::OnPWHistApply )
+-////@end OptionsPropertySheetDlg event table entries
+-
+-  EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, OptionsPropertySheetDlg::OnPageChanging)
+-  EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, OptionsPropertySheetDlg::OnPageChanging)
+-
+-  EVT_UPDATE_UI(   ID_CHECKBOX10,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_RADIOBUTTON7,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_CHECKBOX13,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_CHECKBOX14,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_CHECKBOX16,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_CHECKBOX17,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_RADIOBOX,        OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_CHECKBOX21,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_TEXTCTRL11,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_CHECKBOX24,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_TEXTCTRL12,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_1,    OptionsPropertySheetDlg::OnUpdateUI )
+-
+-  EVT_UPDATE_UI(   ID_CHECKBOX26,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_SPINCTRL11,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_8,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICBOX_1,     OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_PWHISTNOCHANGE,  OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_PWHISTSTOP,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_PWHISTSTART,     OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_PWHISTSETMAX,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_PWHISTCLEAR,     OptionsPropertySheetDlg::OnUpdateUI )
+-
+-  EVT_UPDATE_UI(   ID_CHECKBOX35,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_CHECKBOX29,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_SPINCTRL12,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_2,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_3,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_SLIDER,          OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_4,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_5,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_SPINCTRL13,      OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_7,    OptionsPropertySheetDlg::OnUpdateUI )
+-  EVT_UPDATE_UI(   ID_STATICTEXT_10,   OptionsPropertySheetDlg::OnUpdateUI )
+-END_EVENT_TABLE()
+-
+-const wxString BACKUP_SUFFIX[] = {
+-  wxTRANSLATE("None"),
+-  wxTRANSLATE("YYYYMMMDD_HHMMSS"),
+-  wxTRANSLATE("Incremented Number [001-999]"),
++static const char* const BACKUP_SUFFIX[] = {
++  "None",
++  "YYYYMMMDD_HHMMSS",
++  "Incremented Number [001-999]",
+ };
+ 
+ enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
+ 
+ // Following in enum order (see PWSprefs.h)
+-const wxString DCAStrings[] = {
+-  wxTRANSLATE("Copy password to clipboard"),
+-  wxTRANSLATE("Edit/View selected entry"),
+-  wxTRANSLATE("Autotype"),
+-  wxTRANSLATE("Browse to URL"),
+-  wxTRANSLATE("Copy notes to clipboard"),
+-  wxTRANSLATE("Copy username to clipboard"),
+-  wxTRANSLATE("Copy password to clipboard, minimize"),
+-  wxTRANSLATE("Browse to URL + Autotype"),
+-  wxTRANSLATE("Run Command"),
+-  wxTRANSLATE("Send email"),
++static const char* const DCAStrings[] = {
++  "Copy password to clipboard",
++  "Edit/View selected entry",
++  "Autotype",
++  "Browse to URL",
++  "Copy notes to clipboard",
++  "Copy username to clipboard",
++  "Copy password to clipboard, minimize",
++  "Browse to URL + Autotype",
++  "Run Command",
++  "Send email",
+ };
+ 
+ /*!
+@@ -163,6 +104,57 @@
+   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
+   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
+ 
++  /*!
++   * OptionsPropertySheetDlg event definitions
++   */
++  Bind(wxEVT_BUTTON, &OptionsPropertySheetDlg::OnOk, this, wxID_OK);
++  //begin OptionsPropertySheetDlg event entries
++  Bind(wxEVT_CHECKBOX, &OptionsPropertySheetDlg::OnBackupB4SaveClick, this, ID_CHECKBOX11);
++  Bind(wxEVT_RADIOBUTTON, &OptionsPropertySheetDlg::OnBuPrefix, this, ID_RADIOBUTTON4);
++  Bind(wxEVT_RADIOBUTTON, &OptionsPropertySheetDlg::OnBuPrefix, this, ID_RADIOBUTTON5);
++  Bind(wxEVT_COMBOBOX, &OptionsPropertySheetDlg::OnSuffixCBSet, this, ID_COMBOBOX2);
++  Bind(wxEVT_BUTTON, &OptionsPropertySheetDlg::OnBuDirBrowseClick, this, ID_BUTTON);
++  Bind(wxEVT_CHECKBOX, &OptionsPropertySheetDlg::OnShowUsernameInTreeCB, this, ID_CHECKBOX13);
++  Bind(wxEVT_CHECKBOX, &OptionsPropertySheetDlg::OnPreExpiryWarnClick, this, ID_CHECKBOX19);
++  Bind(wxEVT_CHECKBOX, &OptionsPropertySheetDlg::OnUseDefaultUserClick, this, ID_CHECKBOX24);
++  Bind(wxEVT_BUTTON, &OptionsPropertySheetDlg::OnBrowseLocationClick, this, ID_BUTTON8);
++  Bind(wxEVT_BUTTON, &OptionsPropertySheetDlg::OnPWHistApply, this, ID_PWHISTAPPLY);
++  //end OptionsPropertySheetDlg event entries
++  Bind(wxEVT_BOOKCTRL_PAGE_CHANGING, &OptionsPropertySheetDlg::OnPageChanging, this, wxID_ANY);
++  Bind(wxEVT_BOOKCTRL_PAGE_CHANGING, &OptionsPropertySheetDlg::OnPageChanging, this, wxID_ANY);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX10);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_RADIOBUTTON7);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX13);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX14);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX16);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX17);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_RADIOBOX);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX21);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_TEXTCTRL11);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX24);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_TEXTCTRL12);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_1);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX26);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_SPINCTRL11);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_8);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICBOX_1);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_PWHISTNOCHANGE);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_PWHISTSTOP);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_PWHISTSTART);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_PWHISTSETMAX);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_PWHISTCLEAR);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX35);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_CHECKBOX29);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_SPINCTRL12);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_2);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_3);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_SLIDER);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_4);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_5);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_SPINCTRL13);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_7);
++  Bind(wxEVT_UPDATE_UI, &OptionsPropertySheetDlg::OnUpdateUI, this, ID_STATICTEXT_10);
++
+   CreateButtons(wxOK|wxCANCEL|wxHELP);
+   CreateControls();
+   PrefsToPropSheet();
+@@ -355,7 +347,9 @@
+   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxEXPAND|wxALL, 0);
+   wxArrayString Backup_SuffixCBStrings;
+   for (int i = 0; i < int(sizeof(BACKUP_SUFFIX)/sizeof(BACKUP_SUFFIX[0])); ++i) {
+-    Backup_SuffixCBStrings.Add(_(BACKUP_SUFFIX[i]));
++    Backup_SuffixCBStrings.Add(wxGetTranslation(BACKUP_SUFFIX[i]));
++	Backup_SuffixCBStrings.Add(wxGetTranslation(BACKUP_SUFFIX[i]));
++
+   }
+   m_Backups_SuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), Backup_SuffixCBStrings, wxCB_READONLY );
+   itemBoxSizer15->Add(m_Backups_SuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+@@ -545,7 +539,7 @@
+   wxArrayString m_Misc_DoubleClickActionCBStrings;
+   wxArrayString m_Misc_ShiftDoubleClickActionCBStrings;
+   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i) {
+-    wxString tmp = _(DCAStrings[i]);
++    wxString tmp = wxGetTranslation(DCAStrings[i]);
+     m_Misc_DoubleClickActionCBStrings.Add(tmp);
+     m_Misc_ShiftDoubleClickActionCBStrings.Add(tmp);
+   }
+@@ -1017,12 +1011,12 @@
+   if (m_DoubleClickAction < 0 ||
+       m_DoubleClickAction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
+     m_DoubleClickAction = 0;
+-  m_Misc_DoubleClickActionCB->SetValue(_(DCAStrings[m_DoubleClickAction]));
++  m_Misc_DoubleClickActionCB->SetValue(wxGetTranslation(DCAStrings[m_DoubleClickAction]));
+   m_ShiftDoubleClickAction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
+   if (m_ShiftDoubleClickAction < 0 ||
+       m_ShiftDoubleClickAction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
+     m_ShiftDoubleClickAction = 0;
+-  m_Misc_ShiftDoubleClickActionCB->SetValue(_(DCAStrings[m_ShiftDoubleClickAction]));
++  m_Misc_ShiftDoubleClickActionCB->SetValue(wxGetTranslation(DCAStrings[m_ShiftDoubleClickAction]));
+   m_Misc_AutotypeMinimize = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
+   m_Misc_AutotypeString = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
+   if (m_Misc_AutotypeString.empty())
+@@ -1082,7 +1076,7 @@
+ static int DCAStr2Int(const wxString &str)
+ {
+   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
+-    if (str == _(DCAStrings[i])) {
++    if (str == wxGetTranslation(DCAStrings[i])) {
+       return i;
+     }
+   ASSERT(0);

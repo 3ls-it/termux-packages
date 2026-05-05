@@ -1,0 +1,45 @@
+--- a/src/ui/wxWidgets/SystemTray.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SystemTray.cpp	2026-04-23 21:18:55.211048854 -0400
+@@ -61,21 +61,6 @@
+ //#include "./graphics/toolbar/classic/delete.xpm"
+ //#include "./graphics/toolbar/classic/close.xpm"
+ 
+-BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
+-  EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( ID_SYSTRAY_LOCK,    SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( ID_SYSTRAY_UNLOCK,  SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( wxID_EXIT,          SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( wxID_ICONIZE_FRAME, SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( ID_CLEARCLIPBOARD,  SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( ID_SETDATABASEID,   SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( wxID_ABOUT,         SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( wxID_CLOSE,         SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU( ID_SYSTRAY_CLEAR_RUE,  SystemTray::OnSysTrayMenuItem )
+-  EVT_MENU_RANGE(MIN_RUE_COMMAND_ID, MAX_RUE_COMMAND_ID, SystemTray::OnSysTrayMenuItem )
+-  EVT_TASKBAR_LEFT_DCLICK( SystemTray::OnTaskBarLeftDoubleClick )
+-END_EVENT_TABLE()
+-
+ SystemTray::SystemTray(PasswordSafeFrame* frame) : m_TrayIconWithOverlay(false),
+                                                    m_DatabaseID(0),
+                                                    m_LockedDatabaseIdColor(*wxYELLOW),
+@@ -86,6 +71,20 @@
+                                                    m_frame(frame),
+                                                    m_status(TrayStatus::CLOSED)
+ {
++
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, ID_SYSTRAY_RESTORE);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, ID_SYSTRAY_LOCK);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, ID_SYSTRAY_UNLOCK);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, wxID_EXIT);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, wxID_ICONIZE_FRAME);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, ID_CLEARCLIPBOARD);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, ID_SETDATABASEID);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, wxID_ABOUT);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, wxID_CLOSE);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, ID_SYSTRAY_CLEAR_RUE);
++  Bind(wxEVT_MENU, &SystemTray::OnSysTrayMenuItem, this, MIN_RUE_COMMAND_ID, MAX_RUE_COMMAND_ID);
++  Bind(wxEVT_TASKBAR_LEFT_DCLICK, &SystemTray::OnTaskBarLeftDoubleClick, this);
++
+ }
+ 
+ void SystemTray::SetTrayStatus(TrayStatus status)

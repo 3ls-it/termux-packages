@@ -1,0 +1,98 @@
+--- a/src/ui/wxWidgets/PWSafeApp.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWSafeApp.cpp	2026-04-23 12:18:04.355061233 -0400
+@@ -92,14 +92,18 @@
+ // Need to do this in a global as well, as we die in another
+ // global trace in Release Windows build
+ 
++#ifndef __ANDROID__
++// This static initialization must not run during
++// `_GLOBAL__sub_I_PWSafeApp.cpp` on Android/Termux
+ class RestrainLog {
+ public:
+   RestrainLog(wxLogLevel level) {
+     wxLog::SetComponentLevel(wxT("wx"), level);
+   }
+ };
+-
+ static RestrainLog restLog(wxLOG_Info);
++#endif
++
+ 
+ static const wxCmdLineEntryDesc cmdLineDesc[] = {
+   {wxCMD_LINE_SWITCH, STR("?"), STR("help"),
+@@ -174,22 +178,10 @@
+ IMPLEMENT_CLASS( PWSafeApp, wxApp )
+ 
+ /*!
+- * PWSafeApp event table definition
+- */
+-
+-  BEGIN_EVENT_TABLE( PWSafeApp, wxApp )
+-
+-////@begin PWSafeApp event table entries
+-////@end PWSafeApp event table entries
+-  EVT_TIMER(IDLE_TIMER_ID, PWSafeApp::OnIdleTimer)
+-  EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSafeApp::OnDBGUIPrefsChange)
+-  END_EVENT_TABLE()
+-
+-/*!
+  * Constructor for PWSafeApp
+  */
+ 
+-PWSafeApp::PWSafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
++PWSafeApp::PWSafeApp() : m_idleTimer(nullptr),
+                          m_frame(nullptr), m_recentDatabases(nullptr),
+                          m_locale(nullptr)
+ {
+@@ -220,9 +212,15 @@
+ {
+   pws_os::install_cleanup_handler(cleanup_handler, &m_core);
+   m_locale = new wxLocale;
++#ifdef __ANDROID__
++  wxLocale::AddCatalogLookupPathPrefix(L"@TERMUX_PREFIX@/share/locale");
++  wxLocale::AddCatalogLookupPathPrefix(L"@TERMUX_PREFIX@");
++  wxLocale::AddCatalogLookupPathPrefix(L"@TERMUX_PREFIX@/local");
++#else
+   wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
+   wxLocale::AddCatalogLookupPathPrefix(L"/usr");
+   wxLocale::AddCatalogLookupPathPrefix(L"/usr/local");
++#endif
+ #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
+   wxLocale::AddCatalogLookupPathPrefix(L"../I18N/mos");
+   wxLocale::AddCatalogLookupPathPrefix(L"src/ui/wxWidgets/I18N/mos"); // located in cmake's build directory
+@@ -308,6 +306,11 @@
+   setlocale(LC_CTYPE, "");
+ #endif
+   setlocale(LC_TIME, "");
++
++  // Shuts up the wx logs in Termux/Android
++#ifdef __ANDROID__
++  wxLog::SetComponentLevel(wxT("wx"), wxLOG_Info);
++#endif
+   
+   //Used by help subsystem
+   wxFileSystem::AddHandler(new wxArchiveFSHandler);
+@@ -448,7 +451,7 @@
+   m_core.SetApplicationNameAndVersion(tostdstring(progName),
+                                       MAKELONG(MINORVERSION, MAJORVERSION));
+ 
+-  static wxSingleInstanceChecker appInstance;
++  wxSingleInstanceChecker appInstance;
+   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
+       (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
+        appInstance.IsAnotherRunning()))
+@@ -458,6 +461,14 @@
+     return false;
+   }
+ 
++
++  if (!m_idleTimer) {
++    m_idleTimer = new wxTimer(this, IDLE_TIMER_ID);
++  }
++  Bind(wxEVT_TIMER, &PWSafeApp::OnIdleTimer, this, IDLE_TIMER_ID);
++  Bind(wxEVT_GUI_DB_PREFS_CHANGE, &PWSafeApp::OnDBGUIPrefsChange, this);
++
++
+ #if defined(__X__) || defined(__WXGTK__)
+   Clipboard::GetInstance()->UsePrimarySelection(prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard));
+ #endif

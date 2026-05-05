@@ -1,0 +1,161 @@
+--- a/src/ui/wxWidgets/AddEditPropSheetDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/AddEditPropSheetDlg.cpp	2026-04-28 14:50:43.708731902 -0400
+@@ -46,83 +46,6 @@
+ IMPLEMENT_CLASS( AddEditPropSheetDlg, wxPropertySheetDialog )
+ 
+ /*!
+- * AddEditPropSheetDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
+-
+-  EVT_CLOSE(                                 AddEditPropSheetDlg::OnClose                   )
+-  EVT_BUTTON(       wxID_OK,                 AddEditPropSheetDlg::OnOk                      )
+-  EVT_BUTTON(       wxID_CANCEL,             AddEditPropSheetDlg::OnCancel                  )
+-////@begin AddEditPropSheetDlg event table entries
+-  EVT_TEXT(         ID_TEXTCTRL_PASSWORD,    AddEditPropSheetDlg::OnPasswordChanged         )
+-  EVT_TEXT(         ID_TEXTCTRL_PASSWORD2,   AddEditPropSheetDlg::OnPasswordChanged         )
+-  EVT_BUTTON(       ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnShowHideClick           )
+-  EVT_BUTTON(       ID_BUTTON_SHOWHIDE_2FK,  AddEditPropSheetDlg::OnShowHide2FKClick        )
+-  EVT_BUTTON(       ID_BUTTON_SHOWHIDE_TOTP, AddEditPropSheetDlg::OnShowHideTotpClick       )
+-  EVT_BUTTON(       ID_BUTTON_COPY_TOTP,     AddEditPropSheetDlg::OnCopyAuthCodeClick       )
+-  EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
+-  EVT_BUTTON(       ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnAliasButtonClick        )
+-  EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheetDlg::OnGoButtonClick           )
+-  EVT_BUTTON(       ID_SEND_BTN,             AddEditPropSheetDlg::OnSendButtonClick         )
+-  EVT_CHECKBOX(     ID_CHECKBOX_KEEP,        AddEditPropSheetDlg::OnKeepHistoryClick        )
+-  EVT_RADIOBUTTON(  ID_RADIOBUTTON_ON,       AddEditPropSheetDlg::OnExpRadiobuttonSelected  )
+-  EVT_DATE_CHANGED( ID_DATECTRL_EXP_DATE,    AddEditPropSheetDlg::OnExpDateChanged          )
+-  EVT_RADIOBUTTON(  ID_RADIOBUTTON_IN,       AddEditPropSheetDlg::OnExpRadiobuttonSelected  )
+-  EVT_SPINCTRL(     ID_SPINCTRL_EXP_TIME,    AddEditPropSheetDlg::OnExpIntervalChanged      )
+-  EVT_RADIOBUTTON(  ID_RADIOBUTTON_NEVER,    AddEditPropSheetDlg::OnExpRadiobuttonSelected  )
+-  EVT_COMBOBOX(     ID_POLICYLIST,           AddEditPropSheetDlg::OnPolicylistSelected      )
+-  EVT_CHECKBOX(     ID_CHECKBOX42,           AddEditPropSheetDlg::OnPasswordPolicySelected  )
+-  EVT_CHECKBOX(     ID_CHECKBOX3,            AddEditPropSheetDlg::OnLowercaseCB             )
+-  EVT_CHECKBOX(     ID_CHECKBOX4,            AddEditPropSheetDlg::OnUppercaseCB             )
+-  EVT_CHECKBOX(     ID_CHECKBOX5,            AddEditPropSheetDlg::OnDigitsCB                )
+-  EVT_CHECKBOX(     ID_CHECKBOX6,            AddEditPropSheetDlg::OnSymbolsCB               )
+-  EVT_BUTTON(       ID_RESET_SYMBOLS,        AddEditPropSheetDlg::OnResetSymbolsClick       )
+-  EVT_CHECKBOX(     ID_CHECKBOX7,            AddEditPropSheetDlg::OnEasyReadCBClick         )
+-  EVT_CHECKBOX(     ID_CHECKBOX8,            AddEditPropSheetDlg::OnPronouceableCBClick     )
+-  EVT_CHECKBOX(     ID_CHECKBOX9,            AddEditPropSheetDlg::OnUseHexCBClick           )
+-////@end AddEditPropSheetDlg event table entries
+-  EVT_SPINCTRL(     ID_SPINCTRL5,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
+-  EVT_SPINCTRL(     ID_SPINCTRL6,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
+-  EVT_SPINCTRL(     ID_SPINCTRL7,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
+-  EVT_SPINCTRL(     ID_SPINCTRL8,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
+-
+-  EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheetDlg::OnClearPasswordHistory    )
+-
+-  EVT_TIMER(        ID_TIMER_TOTP_COUNTDOWN, AddEditPropSheetDlg::OnTotpCountdownTimer      )
+-
+-  EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_TITLE,       AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_USERNAME,    AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD,    AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD2,   AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_URL,         AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_EMAIL,       AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_NOTES,       AddEditPropSheetDlg::OnUpdateUI                )
+-
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_AUTOTYPE,    AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_TEXTCTRL_RUN_CMD,     AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_COMBOBOX_DBC_ACTION,  AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_COMBOBOX_SDBC_ACTION, AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_CHECKBOX_KEEP,        AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_SPINCTRL_MAX_PW_HIST, AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_GRID_PW_HIST,         AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_BUTTON_CLEAR_HIST,    AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_BUTTON_COPY_ALL,      AddEditPropSheetDlg::OnUpdateUI                )
+-
+-  EVT_UPDATE_UI(    ID_RADIOBUTTON_ON,       AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_DATECTRL_EXP_DATE,    AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_RADIOBUTTON_IN,       AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_SPINCTRL_EXP_TIME,    AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_STATICTEXT_DAYS,      AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_CHECKBOX_RECURRING,   AddEditPropSheetDlg::OnUpdateUI                )
+-  EVT_UPDATE_UI(    ID_RADIOBUTTON_NEVER,    AddEditPropSheetDlg::OnUpdateUI                )
+-END_EVENT_TABLE()
+-
+-/*!
+  * AddEditPropSheetDlg constructors
+  */
+ 
+@@ -168,6 +91,74 @@
+   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
+   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
+ 
++  /*!
++   * AddEditPropSheetDlg event definitions
++   */
++  Bind(wxEVT_CLOSE_WINDOW, &AddEditPropSheetDlg::OnClose, this);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnOk, this, wxID_OK);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnCancel, this, wxID_CANCEL);
++  //begin AddEditPropSheetDlg event entries
++  Bind(wxEVT_TEXT, &AddEditPropSheetDlg::OnPasswordChanged, this, ID_TEXTCTRL_PASSWORD);
++  Bind(wxEVT_TEXT, &AddEditPropSheetDlg::OnPasswordChanged, this, ID_TEXTCTRL_PASSWORD2);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnShowHideClick, this, ID_BUTTON_SHOWHIDE);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnShowHide2FKClick, this, ID_BUTTON_SHOWHIDE_2FK);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnShowHideTotpClick, this, ID_BUTTON_SHOWHIDE_TOTP);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnCopyAuthCodeClick, this, ID_BUTTON_COPY_TOTP);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnGenerateButtonClick, this, ID_BUTTON_GENERATE);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnAliasButtonClick, this, ID_BUTTON_ALIAS);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnGoButtonClick, this, ID_GO_BTN);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnSendButtonClick, this, ID_SEND_BTN);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnKeepHistoryClick, this, ID_CHECKBOX_KEEP);
++  Bind(wxEVT_RADIOBUTTON, &AddEditPropSheetDlg::OnExpRadiobuttonSelected, this, ID_RADIOBUTTON_ON);
++  Bind(wxEVT_DATE_CHANGED, &AddEditPropSheetDlg::OnExpDateChanged, this, ID_DATECTRL_EXP_DATE);
++  Bind(wxEVT_RADIOBUTTON, &AddEditPropSheetDlg::OnExpRadiobuttonSelected, this, ID_RADIOBUTTON_IN);
++  Bind(wxEVT_SPINCTRL, &AddEditPropSheetDlg::OnExpIntervalChanged, this, ID_SPINCTRL_EXP_TIME);
++  Bind(wxEVT_RADIOBUTTON, &AddEditPropSheetDlg::OnExpRadiobuttonSelected, this, ID_RADIOBUTTON_NEVER);
++  Bind(wxEVT_COMBOBOX, &AddEditPropSheetDlg::OnPolicylistSelected, this, ID_POLICYLIST);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnPasswordPolicySelected, this, ID_CHECKBOX42);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnLowercaseCB, this, ID_CHECKBOX3);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnUppercaseCB, this, ID_CHECKBOX4);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnDigitsCB, this, ID_CHECKBOX5);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnSymbolsCB, this, ID_CHECKBOX6);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnResetSymbolsClick, this, ID_RESET_SYMBOLS);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnEasyReadCBClick, this, ID_CHECKBOX7);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnPronouceableCBClick, this, ID_CHECKBOX8);
++  Bind(wxEVT_CHECKBOX, &AddEditPropSheetDlg::OnUseHexCBClick, this, ID_CHECKBOX9);
++  //end AddEditPropSheetDlg event entries
++  Bind(wxEVT_SPINCTRL, &AddEditPropSheetDlg::OnAtLeastPasswordChars, this, ID_SPINCTRL5);
++  Bind(wxEVT_SPINCTRL, &AddEditPropSheetDlg::OnAtLeastPasswordChars, this, ID_SPINCTRL6);
++  Bind(wxEVT_SPINCTRL, &AddEditPropSheetDlg::OnAtLeastPasswordChars, this, ID_SPINCTRL7);
++  Bind(wxEVT_SPINCTRL, &AddEditPropSheetDlg::OnAtLeastPasswordChars, this, ID_SPINCTRL8);
++  Bind(wxEVT_BUTTON, &AddEditPropSheetDlg::OnClearPasswordHistory, this, ID_BUTTON_CLEAR_HIST);
++  Bind(wxEVT_TIMER, &AddEditPropSheetDlg::OnTotpCountdownTimer, this, ID_TIMER_TOTP_COUNTDOWN);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_COMBOBOX_GROUP);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_BUTTON_SHOWHIDE);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_BUTTON_GENERATE);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_BUTTON_ALIAS);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_TITLE);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_USERNAME);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_PASSWORD);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_PASSWORD2);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_URL);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_EMAIL);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_NOTES);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_AUTOTYPE);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_TEXTCTRL_RUN_CMD);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_COMBOBOX_DBC_ACTION);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_COMBOBOX_SDBC_ACTION);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_CHECKBOX_KEEP);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_SPINCTRL_MAX_PW_HIST);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_GRID_PW_HIST);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_BUTTON_CLEAR_HIST);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_BUTTON_COPY_ALL);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_RADIOBUTTON_ON);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_DATECTRL_EXP_DATE);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_RADIOBUTTON_IN);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_SPINCTRL_EXP_TIME);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_STATICTEXT_DAYS);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_CHECKBOX_RECURRING);
++  Bind(wxEVT_UPDATE_UI, &AddEditPropSheetDlg::OnUpdateUI, this, ID_RADIOBUTTON_NEVER);
++
+   int flags = (m_Type == SheetType::VIEW) ? 
+   // Use Cancel instead of wxCLOSE on view to allow Command-C as copy operation in macOS,
+   // otherwise the Command-C is connected to the Close-Button.

@@ -1,0 +1,19 @@
+--- a/src/ui/wxWidgets/StrengthMeter.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/StrengthMeter.h	2026-04-25 19:15:21.783998701 -0400
+@@ -12,6 +12,7 @@
+ #ifndef STRENGTH_METER_H
+ #define STRENGTH_METER_H
+ 
++
+ #include <wx/wx.h>
+ 
+ class StrengthMeter : public wxControl {
+@@ -54,8 +55,6 @@
+   wxString m_weakLabel;
+   wxString m_mediumLabel;
+   wxString m_strongLabel;
+-
+-  wxDECLARE_EVENT_TABLE();
+ };
+ 
+ #endif // STRENGTH_METER_H

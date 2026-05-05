@@ -1,0 +1,17 @@
+--- a/src/ui/wxWidgets/CMakeLists.txt	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/CMakeLists.txt	2026-03-24 09:31:04.095668332 -0400
+@@ -158,12 +158,12 @@
+   list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/YubiCfgDlg.h src/ui/wxWidgets/YubiMixin.h)
+ endif(HAVE_YKPERS_H)
+ 
+-if (${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
++if (${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "Android")
+ if (NOT NO_QR)
+   list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/QRCodeDlg.cpp src/ui/wxWidgets/QREncode.cpp)
+   list(APPEND PWSAFE_HDR_LIST src/ui/wxWidgets/QREncode.h src/ui/wxWidgets/QRCodeDlg.h)
+ endif(NOT NO_QR)
+-endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
++endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "Android")
+ 
+ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   list(APPEND PWSAFE_SRC_LIST src/ui/wxWidgets/QRCodeDlg.cpp src/ui/wxWidgets/QREncode.mm)

@@ -1,0 +1,68 @@
+--- a/src/ui/wxWidgets/SyncWizard.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SyncWizard.cpp	2026-04-23 17:35:40.583053964 -0400
+@@ -80,8 +80,6 @@
+   virtual bool OnPageLeave(PageDirection WXUNUSED(direction)) { return true; }
+ 
+   void SetChildWindowText(unsigned id, const wxString& str);
+-
+-  DECLARE_EVENT_TABLE()
+ };
+ 
+ /*!
+@@ -213,12 +211,6 @@
+ ///////////////////////////////////////////////////
+ // SyncWizard Implementation
+ //
+-BEGIN_EVENT_TABLE(SyncWizard, wxWizard)
+-  EVT_WIZARD_PAGE_CHANGING(wxID_ANY, SyncWizard::OnWizardPageChanging)
+-  EVT_CLOSE( SyncWizard::OnClose )
+-  EVT_WIZARD_CANCEL(wxID_ANY, SyncWizard::OnWizardCancel)
+-END_EVENT_TABLE()
+-
+ SyncWizard::SyncWizard(wxWindow* parent, PWScore* core, const wxString filename):
+                 wxWizard(parent, wxID_ANY, _("Synchronize another database with currently open database")),
+                 m_page1(nullptr), m_syncData(new SyncData)
+@@ -238,6 +230,10 @@
+   m_syncData->numUpdated = 0;
+   m_syncData->showReport = false;
+ 
++  Bind(wxEVT_WIZARD_PAGE_CHANGING, &SyncWizard::OnWizardPageChanging, this, wxID_ANY);
++  Bind(wxEVT_CLOSE_WINDOW, &SyncWizard::OnClose, this);
++  Bind(wxEVT_WIZARD_CANCEL, &SyncWizard::OnWizardCancel, this, wxID_ANY);
++
+   m_page1 = new SyncStartPage(this, m_syncData);
+ 
+   auto *page2 = new DbSelectionPage(this, m_syncData, filename);
+@@ -346,11 +342,6 @@
+ ////////////////////////////////////////////
+ //SyncWizardPage implementation
+ //
+-BEGIN_EVENT_TABLE(SyncWizardPage, wxWizardPageSimple)
+-  EVT_WIZARD_PAGE_CHANGING(wxID_ANY, SyncWizardPage::OnWizardPageChanging)
+-  EVT_WIZARD_PAGE_CHANGED( wxID_ANY, SyncWizardPage::OnWizardPageChanged)
+-END_EVENT_TABLE()
+-
+ SyncWizardPage::SyncWizardPage(wxWizard* parent, SyncData* data,
+                                   const wxString& pageHeader): wxWizardPageSimple(parent),
+                                                                m_syncData(data),
+@@ -364,6 +355,9 @@
+   f.SetPointSize(f.GetPointSize()*2);
+   hdr->SetFont(f);
+ 
++  Bind(wxEVT_WIZARD_PAGE_CHANGING, &SyncWizardPage::OnWizardPageChanging, this, wxID_ANY);
++  Bind(wxEVT_WIZARD_PAGE_CHANGED, &SyncWizardPage::OnWizardPageChanged, this, wxID_ANY);
++
+   m_pageSizer->Add(hdr, wxSizerFlags().Expand().Proportion(0).Border());
+   m_pageSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Proportion(0).Border());
+   m_pageSizer->AddSpacer(RowSeparation);
+@@ -556,8 +550,8 @@
+ //////////////////////////////////////////////////////
+ // SyncStatusPage implementation
+ //
+-DECLARE_EVENT_TYPE(wxEVT_SYNC_START, -1)
+-DEFINE_EVENT_TYPE(wxEVT_SYNC_START)
++wxDECLARE_EVENT(wxEVT_SYNC_START, wxCommandEvent);
++wxDEFINE_EVENT(wxEVT_SYNC_START, wxCommandEvent);
+ 
+ SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage(parent, data, _("Synchronization status"))
+ {

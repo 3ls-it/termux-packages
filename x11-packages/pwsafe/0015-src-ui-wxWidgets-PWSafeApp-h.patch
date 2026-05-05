@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/PWSafeApp.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWSafeApp.h	2026-04-18 22:58:39.956985581 -0400
+@@ -52,7 +52,6 @@
+ class PWSafeApp : public wxApp
+ {
+   DECLARE_CLASS(PWSafeApp)
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructor

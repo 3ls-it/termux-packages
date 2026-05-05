@@ -1,0 +1,26 @@
+--- a/src/ui/wxWidgets/QRCodeDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/QRCodeDlg.cpp	2026-04-23 22:18:23.923047493 -0400
+@@ -33,12 +33,6 @@
+ // PasswordSafeSerach implementation
+ IMPLEMENT_CLASS(QRCodeDlg, wxDialog)
+ 
+-BEGIN_EVENT_TABLE(QRCodeDlg, wxDialog)
+-  EVT_BUTTON(wxID_CLOSE, QRCodeDlg::OnClose)
+-  EVT_INIT_DIALOG(QRCodeDlg::OnInitDialog)
+-  EVT_TIMER(wxID_ANY, QRCodeDlg::OnTimer)
+-END_EVENT_TABLE()
+-
+ QRCodeDlg::QRCodeDlg(wxWindow *parent, const StringX &data,
+                      const wxString &dlgTitle,
+                      const int seconds,
+@@ -49,6 +43,10 @@
+ {
+   wxASSERT(!parent || parent->IsTopLevel());
+ 
++  Bind(wxEVT_BUTTON, &QRCodeDlg::OnClose, this, wxID_CLOSE);
++  Bind(wxEVT_INIT_DIALOG, &QRCodeDlg::OnInitDialog, this);
++  Bind(wxEVT_TIMER, &QRCodeDlg::OnTimer, this, wxID_ANY);
++
+   CreateControls(data);
+ }
+ 

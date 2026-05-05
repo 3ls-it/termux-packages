@@ -1,0 +1,11 @@
+--- a/src/ui/wxWidgets/SetDatabaseIdDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SetDatabaseIdDlg.h	2026-04-28 19:44:06.304725187 -0400
+@@ -86,8 +86,6 @@
+   wxColor m_UnlockedDatabaseIDColor;
+   wxIcon m_LockedIcon;
+   wxIcon m_UnlockedIcon;
+-
+-  DECLARE_EVENT_TABLE()
+ };
+ 
+ #endif // SETDATABASEIDMAIN_H

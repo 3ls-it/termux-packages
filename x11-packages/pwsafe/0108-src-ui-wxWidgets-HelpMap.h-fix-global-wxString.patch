@@ -1,0 +1,32 @@
+--- a/src/ui/wxWidgets/HelpMap.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/HelpMap.h	2026-05-02 09:04:51.242956878 -0400
+@@ -42,18 +42,18 @@
+ //
+ 
+ //Options dialog
+-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Backups"),          html/backups_tab.html)
+-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Display"),          html/display_tab.html)
+-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Miscellaneous"),    html/misc_tab.html)
+-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password History"), html/password_history_tab.html)
+-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Security"),         html/security_tab.html)
+-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("System"),           html/system_tab.html)
+-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Shortcuts"),        html/shortcuts_tab.html)
++PROPSHEET_HELP(OptionsPropertySheetDlg,        wxGetTranslation("Backups"),          html/backups_tab.html)
++PROPSHEET_HELP(OptionsPropertySheetDlg,        wxGetTranslation("Display"),          html/display_tab.html)
++PROPSHEET_HELP(OptionsPropertySheetDlg,        wxGetTranslation("Miscellaneous"),    html/misc_tab.html)
++PROPSHEET_HELP(OptionsPropertySheetDlg,        wxGetTranslation("Password History"), html/password_history_tab.html)
++PROPSHEET_HELP(OptionsPropertySheetDlg,        wxGetTranslation("Security"),         html/security_tab.html)
++PROPSHEET_HELP(OptionsPropertySheetDlg,        wxGetTranslation("System"),           html/system_tab.html)
++PROPSHEET_HELP(OptionsPropertySheetDlg,        wxGetTranslation("Shortcuts"),        html/shortcuts_tab.html)
+ 
+-PROPSHEET_HELP(AddEditPropSheetDlg, _("Basic"),            html/entering_pwd.html)
+-PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_date.html)
+-PROPSHEET_HELP(AddEditPropSheetDlg, _("Password Policy"),  html/entering_pwd_pp.html)
+-PROPSHEET_HELP(AddEditPropSheetDlg, _("Additional"),       html/entering_pwd_add.html)
++PROPSHEET_HELP(AddEditPropSheetDlg, wxGetTranslation("Basic"),            html/entering_pwd.html)
++PROPSHEET_HELP(AddEditPropSheetDlg, wxGetTranslation("Dates and Times"),  html/entering_pwd_date.html)
++PROPSHEET_HELP(AddEditPropSheetDlg, wxGetTranslation("Password Policy"),  html/entering_pwd_pp.html)
++PROPSHEET_HELP(AddEditPropSheetDlg, wxGetTranslation("Additional"),       html/entering_pwd_add.html)
+ 
+ DLG_HELP(EditShortcutDlg,                  html/edit_menu.html)
+ 

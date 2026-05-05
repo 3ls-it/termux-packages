@@ -1,0 +1,36 @@
+--- a/src/ui/wxWidgets/PWFiltersStatusDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersStatusDlg.cpp	2026-04-29 18:15:48.220694249 -0400
+@@ -48,20 +48,6 @@
+ IMPLEMENT_CLASS( pwFiltersStatusDlg, wxDialog )
+ 
+ /*!
+- * pwFiltersStatusDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( pwFiltersStatusDlg, wxDialog )
+-
+-  EVT_BUTTON( wxID_OK, pwFiltersStatusDlg::OnOk )
+-  EVT_COMBOBOX( ID_COMBOBOX60, pwFiltersStatusDlg::OnSelectionChangeRule )
+-  EVT_COMBOBOX( ID_COMBOBOX61, pwFiltersStatusDlg::OnSelectionChangeStatus )
+-  EVT_BUTTON( wxID_CANCEL, pwFiltersStatusDlg::OnCancelClick )
+-  EVT_CLOSE( pwFiltersStatusDlg::OnClose )
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * pwFiltersStatusDlg constructors
+  */
+ 
+@@ -75,6 +61,12 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create(parent, wxID_ANY, _("Display Filter Entry Status Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+ 
++  Bind(wxEVT_BUTTON, &pwFiltersStatusDlg::OnOk, this, wxID_OK);
++  Bind(wxEVT_COMBOBOX, &pwFiltersStatusDlg::OnSelectionChangeRule, this, ID_COMBOBOX60);
++  Bind(wxEVT_COMBOBOX, &pwFiltersStatusDlg::OnSelectionChangeStatus, this, ID_COMBOBOX61);
++  Bind(wxEVT_BUTTON, &pwFiltersStatusDlg::OnCancelClick, this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &pwFiltersStatusDlg::OnClose, this);
++
+   CreateControls();
+ 
+   // Allow to resize the dialog in width, only.

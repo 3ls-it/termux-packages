@@ -1,0 +1,40 @@
+--- a/src/ui/wxWidgets/SetFiltersDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SetFiltersDlg.cpp	2026-04-26 21:13:27.993881300 -0400
+@@ -45,24 +45,6 @@
+ 
+ IMPLEMENT_DYNAMIC_CLASS( SetFiltersDlg, wxDialog )
+ 
+-
+-/*!
+- * SetFiltersDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( SetFiltersDlg, wxDialog )
+-
+-////@begin SetFiltersDlg event table entries
+-  EVT_BUTTON( wxID_APPLY, SetFiltersDlg::OnApplyClick )
+-  EVT_BUTTON( wxID_OK, SetFiltersDlg::OnOkClick )
+-  EVT_BUTTON( wxID_CANCEL, SetFiltersDlg::OnCancelClick )
+-  EVT_BUTTON( wxID_HELP, SetFiltersDlg::OnHelpClick )
+-  EVT_CLOSE( SetFiltersDlg::OnClose )
+-////@end SetFiltersDlg event table entries
+-
+-END_EVENT_TABLE()
+-
+-
+ /*!
+  * SetFiltersDlg constructors
+  */
+@@ -114,6 +96,12 @@
+   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, heading, pos, size, style );
+ 
++  Bind(wxEVT_BUTTON, &SetFiltersDlg::OnApplyClick, this, wxID_APPLY);
++  Bind(wxEVT_BUTTON, &SetFiltersDlg::OnOkClick, this, wxID_OK);
++  Bind(wxEVT_BUTTON, &SetFiltersDlg::OnCancelClick, this, wxID_CANCEL);
++  Bind(wxEVT_BUTTON, &SetFiltersDlg::OnHelpClick, this, wxID_HELP);
++  Bind(wxEVT_CLOSE_WINDOW, &SetFiltersDlg::OnClose, this);
++
+   CreateControls();
+   if (GetSizer())
+   {

@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/SafeCombinationPromptDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SafeCombinationPromptDlg.h	2026-04-29 14:19:05.464699667 -0400
+@@ -67,7 +67,6 @@
+ #endif
+ {
+   DECLARE_CLASS( SafeCombinationPromptDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ 
+ public:

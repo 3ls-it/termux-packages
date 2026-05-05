@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/PWFiltersIntegerDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersIntegerDlg.h	2026-04-19 09:14:36.473018720 -0400
+@@ -55,7 +55,6 @@
+ class pwFiltersIntegerDlg : public QueryCancelDlg
+ {
+   DECLARE_CLASS(pwFiltersIntegerDlg)
+-  DECLARE_EVENT_TABLE()
+ public:
+   static pwFiltersIntegerDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit = nullptr);
+ protected:

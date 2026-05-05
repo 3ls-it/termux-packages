@@ -1,0 +1,57 @@
+--- a/src/ui/wxWidgets/PWFiltersIntegerDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersIntegerDlg.cpp	2026-04-19 12:27:49.633014297 -0400
+@@ -44,7 +44,11 @@
+ 
+ enum { PW_UNIT_BYTES = 0, PW_UNIT_KBYTES, PW_UNIT_MBYTES, PW_NUM_UNITS, PW_MAX_UNITS = PW_UNIT_MBYTES, PW_MIN_UNITS = PW_UNIT_BYTES };
+ 
+-static std::vector<int> entrySizeMmax = {
++/*!
++ * Let's not use a std::vector as it does dynamic allocation in its constructor
++ * which can lead to early heap corruption under Bionic libc on Android/Termux.
++ */
++static constexpr int entrySizeMmax[] = {
+ #if INT_MAX == 32768
+   // In case we are running on a 32 bit machine
+   INT_MAX, INT_MAX, 999
+@@ -60,24 +64,6 @@
+ IMPLEMENT_CLASS( pwFiltersIntegerDlg, wxDialog )
+ 
+ /*!
+- * pwFiltersIntegerDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( pwFiltersIntegerDlg, wxDialog )
+-
+-  EVT_BUTTON( wxID_OK, pwFiltersIntegerDlg::OnOk )
+-  EVT_COMBOBOX( ID_COMBOBOX57, pwFiltersIntegerDlg::OnSelectionChange )
+-  EVT_SPINCTRL( ID_SPINCTRL58, pwFiltersIntegerDlg::OnFNum1Change )
+-  EVT_SPINCTRL( ID_SPINCTRL59, pwFiltersIntegerDlg::OnFNum2Change )
+-  EVT_RADIOBUTTON(  ID_RADIO_BT_BY, pwFiltersIntegerDlg::OnByteRadiobuttonSelected )
+-  EVT_RADIOBUTTON(  ID_RADIO_BT_KB, pwFiltersIntegerDlg::OnKiloByteRadiobuttonSelected )
+-  EVT_RADIOBUTTON(  ID_RADIO_BT_MB, pwFiltersIntegerDlg::OnMegaByteRadiobuttonSelected )
+-  EVT_BUTTON( wxID_CANCEL, pwFiltersIntegerDlg::OnCancelClick )
+-  EVT_CLOSE( pwFiltersIntegerDlg::OnClose )
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * pwFiltersIntegerDlg constructors
+  */
+ 
+@@ -91,6 +77,16 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create(parent, wxID_ANY, _("Display Filter Integer Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+ 
++  Bind(wxEVT_BUTTON,       &pwFiltersIntegerDlg::OnOk,                        this, wxID_OK);
++  Bind(wxEVT_COMBOBOX,     &pwFiltersIntegerDlg::OnSelectionChange,           this, ID_COMBOBOX57);
++  Bind(wxEVT_SPINCTRL,     &pwFiltersIntegerDlg::OnFNum1Change,               this, ID_SPINCTRL58);
++  Bind(wxEVT_SPINCTRL,     &pwFiltersIntegerDlg::OnFNum2Change,               this, ID_SPINCTRL59);
++  Bind(wxEVT_RADIOBUTTON,  &pwFiltersIntegerDlg::OnByteRadiobuttonSelected,   this, ID_RADIO_BT_BY);
++  Bind(wxEVT_RADIOBUTTON,  &pwFiltersIntegerDlg::OnKiloByteRadiobuttonSelected,this, ID_RADIO_BT_KB);
++  Bind(wxEVT_RADIOBUTTON,  &pwFiltersIntegerDlg::OnMegaByteRadiobuttonSelected,this, ID_RADIO_BT_MB);
++  Bind(wxEVT_BUTTON,       &pwFiltersIntegerDlg::OnCancelClick,               this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &pwFiltersIntegerDlg::OnClose,                     this);
++
+   CreateControls();
+ 
+   // Allow to resize the dialog in width, only.

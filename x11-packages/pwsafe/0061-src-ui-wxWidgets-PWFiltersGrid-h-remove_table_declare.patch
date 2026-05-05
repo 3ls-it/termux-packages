@@ -1,0 +1,19 @@
+--- a/src/ui/wxWidgets/PWFiltersGrid.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersGrid.h	2026-04-26 08:44:23.007426995 -0400
+@@ -72,7 +72,6 @@
+ class pwFiltersGrid : public wxGrid
+ {
+   DECLARE_DYNAMIC_CLASS( pwFiltersGrid )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructors
+@@ -111,7 +110,7 @@
+   /// EVT_GRID_RANGE_SELECT
+   void OnGridRangeSelect(wxGridRangeSelectEvent& evt);
+   
+-  /// EVT_COMMAND for event handler for EVT_SELECT_GRID_ROW
++  /// EVT_COMMAND for event handler for wxEVT_GRID_SELECT_CELL
+   void OnAutoSelectGridRow(wxCommandEvent& evt);
+   
+   /// wxEVT_CHAR_HOOK event handler for WXK_UP, WXK_DOWN, WXK_LEFT, WXK_RIGHT

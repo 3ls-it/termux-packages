@@ -1,0 +1,40 @@
+--- a/src/ui/wxWidgets/PWFiltersMediaDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersMediaDlg.cpp	2026-05-03 18:05:24.643988339 -0400
+@@ -48,21 +48,6 @@
+ IMPLEMENT_CLASS( pwFiltersMediaTypesDlg, wxDialog )
+ 
+ /*!
+- * pwFiltersMediaTypesDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( pwFiltersMediaTypesDlg, wxDialog )
+-
+-  EVT_BUTTON( wxID_OK, pwFiltersMediaTypesDlg::OnOk )
+-  EVT_COMBOBOX( ID_COMBOBOX69, pwFiltersMediaTypesDlg::OnSelectionChange )
+-  EVT_COMBOBOX( ID_COMBOBOX70, pwFiltersMediaTypesDlg::OnMediaTypeChange )
+-  EVT_TEXT( ID_COMBOBOX70, pwFiltersMediaTypesDlg::OnMediaTypeChange )
+-  EVT_BUTTON( wxID_CANCEL, pwFiltersMediaTypesDlg::OnCancelClick )
+-  EVT_CLOSE( pwFiltersMediaTypesDlg::OnClose )
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * pwFiltersMediaTypesDlg constructors
+  */
+ 
+@@ -75,7 +60,14 @@
+   Init();
+   
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+-  wxDialog::Create(parent, wxID_ANY, _("Display Filter Media Types Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
++  wxDialog::Create(parent, wxID_ANY, wxTRANSLATE("Display Filter Media Types Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
++
++  Bind(wxEVT_BUTTON, &pwFiltersMediaTypesDlg::OnOk, this, wxID_OK);
++  Bind(wxEVT_COMBOBOX, &pwFiltersMediaTypesDlg::OnSelectionChange, this, ID_COMBOBOX69);
++  Bind(wxEVT_COMBOBOX, &pwFiltersMediaTypesDlg::OnMediaTypeChange, this, ID_COMBOBOX70);
++  Bind(wxEVT_TEXT, &pwFiltersMediaTypesDlg::OnMediaTypeChange, this, ID_COMBOBOX70);
++  Bind(wxEVT_BUTTON, &pwFiltersMediaTypesDlg::OnCancelClick, this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &pwFiltersMediaTypesDlg::OnClose, this);
+ 
+   CreateControls();
+ 

@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/PropertiesDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PropertiesDlg.h	2026-04-27 20:27:21.808757156 -0400
+@@ -68,7 +68,6 @@
+ class PropertiesDlg : public wxDialog
+ {
+   DECLARE_CLASS( PropertiesDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   

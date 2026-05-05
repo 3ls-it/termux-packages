@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/YubiCfgDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/YubiCfgDlg.h	2026-04-23 13:58:44.351058929 -0400
+@@ -60,7 +60,6 @@
+ class YubiCfgDlg : public wxDialog
+ {
+   DECLARE_CLASS( YubiCfgDlg )
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   /// Constructors

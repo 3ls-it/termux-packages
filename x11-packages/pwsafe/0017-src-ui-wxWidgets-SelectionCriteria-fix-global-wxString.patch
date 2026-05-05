@@ -1,0 +1,44 @@
+--- a/src/ui/wxWidgets/SelectionCriteria.cpp
++++ b/src/ui/wxWidgets/SelectionCriteria.cpp
+@@ -29,20 +29,20 @@
+                                   } ;
+ 
+ struct _subgroupFunctions {
+-  const wxString name;
++  const char* name_msgid;
+   PWSMatch::MatchRule function;
+   // Following ctor's required to shut up some compiler warnings
+-  _subgroupFunctions() : name(wxEmptyString), function(PWSMatch::MR_INVALID) {}
+-  _subgroupFunctions(const wxString &aname, PWSMatch::MatchRule afunction) :
+-    name(aname), function(afunction) {}
+-} subgroupFunctions[] = {                         {_("equals"),              PWSMatch::MR_EQUALS},
+-                                                  {_("does not equal"),      PWSMatch::MR_NOTEQUAL},
+-                                                  {_("begins with"),         PWSMatch::MR_BEGINS},
+-                                                  {_("does not begin with"), PWSMatch::MR_NOTBEGIN},
+-                                                  {_("ends with"),           PWSMatch::MR_ENDS},
+-                                                  {_("does not end with"),   PWSMatch::MR_NOTEND},
+-                                                  {_("contains"),            PWSMatch::MR_CONTAINS},
+-                                                  {_("does not contain"),    PWSMatch::MR_NOTCONTAIN} } ;
++  _subgroupFunctions() : name_msgid(nullptr), function(PWSMatch::MR_INVALID) {}
++  _subgroupFunctions(const char* aname_msgid, PWSMatch::MatchRule afunction) :
++    name_msgid(aname_msgid), function(afunction) {}
++} subgroupFunctions[] = {                         {"equals",              PWSMatch::MR_EQUALS},
++                                                  {"does not equal",      PWSMatch::MR_NOTEQUAL},
++                                                  {"begins with",         PWSMatch::MR_BEGINS},
++                                                  {"does not begin with", PWSMatch::MR_NOTBEGIN},
++                                                  {"ends with",           PWSMatch::MR_ENDS},
++                                                  {"does not end with",   PWSMatch::MR_NOTEND},
++                                                  {"contains",            PWSMatch::MR_CONTAINS},
++                                                  {"does not contain",    PWSMatch::MR_NOTCONTAIN} } ; 
+ 
+ CItemData::FieldType selectableFields[] = { CItemData::GROUP,
+                                             CItemData::TITLE,
+@@ -142,7 +142,7 @@
+ wxString SelectionCriteria::GetSubgroupFunctionName(size_t idx)
+ {
+   wxASSERT_MSG(idx < GetNumSubgroupFunctions(), wxT("Invalid index for GetSubgroupFunctionName"));
+-  return wxGetTranslation(subgroupFunctions[idx].name);
++  return wxGetTranslation(subgroupFunctions[idx].name_msgid);
+ }
+ //static
+ PWSMatch::MatchRule SelectionCriteria::GetSubgroupFunction(size_t idx)

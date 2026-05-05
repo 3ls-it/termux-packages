@@ -1,0 +1,36 @@
+--- a/src/ui/wxWidgets/PWFiltersTypeDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PWFiltersTypeDlg.cpp	2026-04-29 17:38:06.732695112 -0400
+@@ -50,20 +50,6 @@
+ IMPLEMENT_CLASS( pwFiltersTypeDlg, wxDialog )
+ 
+ /*!
+- * pwFiltersTypeDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( pwFiltersTypeDlg, wxDialog )
+-
+-  EVT_BUTTON( wxID_OK, pwFiltersTypeDlg::OnOk )
+-  EVT_COMBOBOX( ID_COMBOBOX62, pwFiltersTypeDlg::OnSelectionChangeRule )
+-  EVT_COMBOBOX( ID_COMBOBOX63, pwFiltersTypeDlg::OnSelectionChangeType )
+-  EVT_BUTTON( wxID_CANCEL, pwFiltersTypeDlg::OnCancelClick )
+-  EVT_CLOSE( pwFiltersTypeDlg::OnClose )
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * pwFiltersTypeDlg constructors
+  */
+ 
+@@ -77,6 +63,12 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create(parent, wxID_ANY, _("Display Filter Entry Type Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+ 
++  Bind(wxEVT_BUTTON, &pwFiltersTypeDlg::OnOk, this, wxID_OK);
++  Bind(wxEVT_COMBOBOX, &pwFiltersTypeDlg::OnSelectionChangeRule, this, ID_COMBOBOX62);
++  Bind(wxEVT_COMBOBOX, &pwFiltersTypeDlg::OnSelectionChangeType, this, ID_COMBOBOX63);
++  Bind(wxEVT_BUTTON, &pwFiltersTypeDlg::OnCancelClick, this, wxID_CANCEL);
++  Bind(wxEVT_CLOSE_WINDOW, &pwFiltersTypeDlg::OnClose, this);
++
+   CreateControls();
+ 
+   // Allow to resize the dialog in width, only.

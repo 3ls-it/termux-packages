@@ -1,0 +1,11 @@
+--- a/src/ui/wxWidgets/FieldSelectionPanel.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/FieldSelectionPanel.h	2026-04-25 19:03:18.023998977 -0400
+@@ -29,8 +29,6 @@
+  
+ class FieldSelectionPanel : public wxPanel
+ {
+-  DECLARE_EVENT_TABLE()
+-
+   //returns wxNOT_FOUND if the field is not found in the listbox
+   int FindField(CItemData::FieldType ft, wxListBox* lb) const;
+   void MoveItem(int index, wxListBox* from, wxListBox* to);

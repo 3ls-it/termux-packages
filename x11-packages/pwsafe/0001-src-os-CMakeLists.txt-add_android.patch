@@ -1,0 +1,11 @@
+--- a/src/os/CMakeLists.txt	2025-11-22 04:17:08.000000000 -0500
++++ b/src/os/CMakeLists.txt	2026-03-15 21:01:44.657996972 -0400
+@@ -55,7 +55,7 @@
+     mac/UUID.cpp
+     mac/media.cpp
+     )
+-  elseif (${CMAKE_SYSTEM_NAME} MATCHES "(Linux|FreeBSD|OpenBSD)")
++  elseif (${CMAKE_SYSTEM_NAME} MATCHES "(Linux|FreeBSD|OpenBSD|Android)")
+   set (OS_SRCS
+     unix/KeySend.cpp
+     unix/UUID.cpp

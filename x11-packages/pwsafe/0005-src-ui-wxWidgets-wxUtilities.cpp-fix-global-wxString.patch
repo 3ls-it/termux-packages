@@ -1,0 +1,20 @@
+--- a/src/ui/wxWidgets/wxUtilities.cpp
++++ b/src/ui/wxWidgets/wxUtilities.cpp
+@@ -227,7 +227,7 @@
+   auto *sizer = new wxBoxSizer(wxVERTICAL);
+   parent->GetSizer()->Add(sizer, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+ 
+-  auto *labelCtrl = new wxStaticText(parent, wxID_STATIC, _(label), wxDefaultPosition, wxDefaultSize, 0);
++  auto *labelCtrl = new wxStaticText(parent, wxID_STATIC, wxGetTranslation(label), wxDefaultPosition, wxDefaultSize, 0);
+   sizer->Add(labelCtrl, 0, wxBOTTOM|wxALIGN_LEFT, 5);
+ 
+   auto *safeCombinationCtrl = new SafeCombinationCtrl(parent, id, password, wxDefaultPosition, wxDefaultSize);
+@@ -368,7 +368,7 @@
+ // on Fedora or Ubuntu
+ bool IsTaskBarIconAvailable()
+ {
+-#if defined(__WXGTK__) && !defined(__OpenBSD__) && !defined(__FreeBSD__)
++#if defined(__WXGTK__) && !defined(__OpenBSD__) && !defined(__FreeBSD__) && !defined(__ANDROID__)
+   const wxVersionInfo verInfo = wxGetLibraryVersionInfo();
+   int major = verInfo.GetMajor();
+   int minor = verInfo.GetMinor();

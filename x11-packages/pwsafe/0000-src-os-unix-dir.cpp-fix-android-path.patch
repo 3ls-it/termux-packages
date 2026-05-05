@@ -1,0 +1,20 @@
+--- a/src/os/unix/dir.cpp
++++ b/src/os/unix/dir.cpp
+@@ -209,6 +209,8 @@
+   if (xmldir.empty()) {
+ #ifdef __FreeBSD__
+   xmldir = _T("/usr/local/share/pwsafe/xml/");
++#elif defined(__ANDROID__)
++  xmldir = _T("@TERMUX_PREFIX@/share/passwordsafe/xml/");
+ #else
+   xmldir = _T("/usr/share/passwordsafe/xml/");
+ #endif
+@@ -222,6 +224,8 @@
+   if (helpdir.empty()) {
+ #if defined( __FreeBSD__) || defined(__OpenBSD)
+     helpdir = _T("/usr/local/share/doc/passwordsafe/help/");
++#elif defined(__ANDROID__)
++    helpdir = _T("@TERMUX_PREFIX@/share/passwordsafe/help/");
+ #else
+     helpdir = _T("/usr/share/passwordsafe/help/");
+ #endif

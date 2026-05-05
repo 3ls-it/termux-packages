@@ -1,0 +1,36 @@
+--- a/src/ui/wxWidgets/GridCtrl.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/GridCtrl.cpp	2026-04-23 20:43:07.779049674 -0400
+@@ -41,21 +41,6 @@
+ IMPLEMENT_CLASS( GridCtrl, wxGrid )
+ 
+ /*!
+- * GridCtrl event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( GridCtrl, wxGrid )
+-
+-////@begin GridCtrl event table entries
+-  EVT_GRID_CELL_RIGHT_CLICK( GridCtrl::OnCellRightClick )
+-  EVT_GRID_CELL_LEFT_DCLICK( GridCtrl::OnLeftDClick )
+-  EVT_GRID_SELECT_CELL( GridCtrl::OnSelectCell )
+-  EVT_CONTEXT_MENU(GridCtrl::OnContextMenu)
+-////@end GridCtrl event table entries
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * GridCtrl constructors
+  */
+ 
+@@ -71,6 +56,11 @@
+   Init();
+   Create(parent, id, pos, size, style);
+ 
++  Bind(wxEVT_GRID_CELL_RIGHT_CLICK, &GridCtrl::OnCellRightClick, this);
++  Bind(wxEVT_GRID_CELL_LEFT_DCLICK, &GridCtrl::OnLeftDClick, this);
++  Bind(wxEVT_GRID_SELECT_CELL, &GridCtrl::OnSelectCell, this);
++  Bind(wxEVT_CONTEXT_MENU, &GridCtrl::OnContextMenu, this);
++
+   auto *header = wxGrid::GetGridColHeader();
+ 
+   if (header) {

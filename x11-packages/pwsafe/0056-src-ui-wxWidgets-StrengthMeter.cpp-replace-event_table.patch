@@ -1,0 +1,32 @@
+--- a/src/ui/wxWidgets/StrengthMeter.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/StrengthMeter.cpp	2026-05-03 16:46:12.163990152 -0400
+@@ -11,11 +11,6 @@
+ 
+ #include "StrengthMeter.h"
+ 
+-wxBEGIN_EVENT_TABLE(StrengthMeter, wxControl)
+-  EVT_PAINT(StrengthMeter::OnPaint)
+-  EVT_SIZE(StrengthMeter::OnSize)
+-wxEND_EVENT_TABLE()
+-
+ StrengthMeter::StrengthMeter(wxWindow* parent, wxWindowID id,
+                              const wxPoint& pos, const wxSize& size)
+   : wxControl(parent, id, pos, size, wxBORDER_NONE)
+@@ -23,12 +18,14 @@
+   , m_weakColor(wxColor(255, 75, 75))    // Red
+   , m_mediumColor(wxColor(255, 165, 0))  // Orange
+   , m_strongColor(wxColor(0, 175, 0))    // Green
+-  , m_weakLabel(_("Weak Password"))
+-  , m_mediumLabel(_("Medium Password"))
+-  , m_strongLabel(_("Strong Password"))
++  , m_weakLabel(wxTRANSLATE("Weak Password"))
++  , m_mediumLabel(wxTRANSLATE("Medium Password"))
++  , m_strongLabel(wxTRANSLATE("Strong Password"))
+ {
+   SetBackgroundStyle(wxBG_STYLE_PAINT);
+   SetMinSize(wxSize(200, 10));
++  Bind(wxEVT_PAINT, &StrengthMeter::OnPaint, this);
++  Bind(wxEVT_SIZE, &StrengthMeter::OnSize, this);
+ }
+ 
+ void StrengthMeter::SetStrength(int strength)

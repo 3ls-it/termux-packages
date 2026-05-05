@@ -1,0 +1,10 @@
+--- a/src/ui/wxWidgets/AddEditPropSheetDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/AddEditPropSheetDlg.h	2026-04-28 14:51:08.092731893 -0400
+@@ -137,7 +137,6 @@
+ class AddEditPropSheetDlg : public wxPropertySheetDialog
+ {
+   DECLARE_CLASS(AddEditPropSheetDlg)
+-  DECLARE_EVENT_TABLE()
+ 
+ public:
+   enum class SheetType

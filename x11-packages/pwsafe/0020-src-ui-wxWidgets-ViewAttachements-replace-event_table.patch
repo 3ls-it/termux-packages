@@ -1,0 +1,23 @@
+--- a/src/ui/wxWidgets/ViewAttachmentDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ViewAttachmentDlg.cpp	2026-04-18 16:57:17.368993852 -0400
+@@ -25,17 +25,14 @@
+ //(*IdInit(ViewAttachmentDlg)
+ //*)
+ 
+-BEGIN_EVENT_TABLE(ViewAttachmentDlg, wxDialog)
+-  //(*EventTable(ViewAttachmentDlg)
+-    EVT_BUTTON( wxID_CLOSE, ViewAttachmentDlg::OnClose )
+-  //*)
+-END_EVENT_TABLE()
+-
+ ViewAttachmentDlg::ViewAttachmentDlg(wxWindow *parent, wxWindowID id)
+ {
+   wxASSERT(!parent || parent->IsTopLevel());
+   //(*Initialize(ViewAttachmentDlg)
+   wxDialog::Create(parent, id, _("View Attachment"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("ID_VIEWATTACHMENT"));
++
++  Bind(wxEVT_BUTTON, &ViewAttachmentDlg::OnClose, this, wxID_CLOSE);
++
+   SetMinSize(wxSize(300,400));
+ 
+   auto *panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);

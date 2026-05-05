@@ -1,0 +1,49 @@
+--- a/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp	2026-04-29 16:29:34.624696681 -0400
+@@ -61,27 +61,6 @@
+ IMPLEMENT_CLASS( SafeCombinationEntryDlg, wxDialog )
+ 
+ /*!
+- * SafeCombinationEntryDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( SafeCombinationEntryDlg, wxDialog )
+-
+-////@begin SafeCombinationEntryDlg event table entries
+-  EVT_ACTIVATE( SafeCombinationEntryDlg::OnActivate                               )
+-  EVT_BUTTON(   ID_ELLIPSIS,        SafeCombinationEntryDlg::OnEllipsisClick      )
+-  EVT_BUTTON(   ID_NEWDB,           SafeCombinationEntryDlg::OnNewDbClick         )
+-#ifndef NO_YUBI
+-  EVT_BUTTON(   ID_YUBIBTN,         SafeCombinationEntryDlg::OnYubibtnClick       )
+-  EVT_TIMER(    POLLING_TIMER_ID,   SafeCombinationEntryDlg::OnPollingTimer       )
+-#endif
+-  EVT_BUTTON(   wxID_OK,            SafeCombinationEntryDlg::OnOk                 )
+-  EVT_BUTTON(   wxID_CANCEL,        SafeCombinationEntryDlg::OnCancel             )
+-  EVT_COMBOBOX( ID_DBASECOMBOBOX,   SafeCombinationEntryDlg::OnDBSelectionChange  )
+-  EVT_CHECKBOX( ID_READONLY,        SafeCombinationEntryDlg::OnReadonlyClick      )
+-////@end SafeCombinationEntryDlg event table entries
+-END_EVENT_TABLE()
+-
+-/*!
+  * SafeCombinationEntryDlg constructors
+  */
+ SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow *parent, PWScore &core,
+@@ -100,6 +79,18 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++  Bind(wxEVT_ACTIVATE, &SafeCombinationEntryDlg::OnActivate, this);
++  Bind(wxEVT_BUTTON, &SafeCombinationEntryDlg::OnEllipsisClick, this, ID_ELLIPSIS);
++  Bind(wxEVT_BUTTON, &SafeCombinationEntryDlg::OnNewDbClick, this, ID_NEWDB);
++#ifndef NO_YUBI
++  Bind(wxEVT_BUTTON, &SafeCombinationEntryDlg::OnYubibtnClick, this, ID_YUBIBTN);
++  Bind(wxEVT_TIMER, &SafeCombinationEntryDlg::OnPollingTimer, this, POLLING_TIMER_ID);
++#endif
++  Bind(wxEVT_BUTTON, &SafeCombinationEntryDlg::OnOk, this, wxID_OK);
++  Bind(wxEVT_BUTTON, &SafeCombinationEntryDlg::OnCancel, this, wxID_CANCEL);
++  Bind(wxEVT_COMBOBOX, &SafeCombinationEntryDlg::OnDBSelectionChange, this, ID_DBASECOMBOBOX);
++  Bind(wxEVT_CHECKBOX, &SafeCombinationEntryDlg::OnReadonlyClick, this, ID_READONLY);
++
+   CreateControls();
+   if (GetSizer())
+   {

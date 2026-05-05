@@ -1,0 +1,93 @@
+--- a/src/ui/wxWidgets/TreeCtrl.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/TreeCtrl.cpp	2026-04-25 20:58:00.063996352 -0400
+@@ -112,47 +112,6 @@
+ // to let that stack unwind.
+ enum {ID_TREECTRL_1 = ID_TREECTRL + 1 };
+ 
+-/*!
+- * TreeCtrl event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
+-
+-////@begin TreeCtrl event table entries
+-  EVT_TREE_SEL_CHANGED( ID_TREECTRL, TreeCtrl::OnTreectrlSelChanged )
+-  EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, TreeCtrl::OnTreectrlItemActivated )
+-  EVT_TREE_ITEM_MENU( ID_TREECTRL, TreeCtrl::OnContextMenu )
+-  EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, TreeCtrl::OnGetToolTip )
+-  EVT_MENU( ID_ADDGROUP, TreeCtrl::OnAddGroup )
+-  EVT_MENU( ID_RENAME, TreeCtrl::OnRenameGroup )
+-  EVT_TREE_BEGIN_LABEL_EDIT( ID_TREECTRL, TreeCtrl::OnStartLabelEdit )
+-  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, TreeCtrl::OnEndLabelEdit )
+-  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, TreeCtrl::OnEndLabelEdit )
+-  EVT_TREE_KEY_DOWN( ID_TREECTRL, TreeCtrl::OnKeyDown )
+-  EVT_TREE_BEGIN_DRAG(ID_TREECTRL, TreeCtrl::OnBeginDrag )
+-  EVT_TREE_END_DRAG(ID_TREECTRL, TreeCtrl::OnEndDrag )
+-  EVT_MOTION( TreeCtrl::OnMouseMove )
+-  /*
+-    In Linux environments context menus appear on Right-Down mouse click.
+-    Which mouse click type (Right-Down/Right-Up) is the right one on a platform
+-    is considered by 'EVT_CONTEXT_MENU(TreeCtrl::OnContextMenu)' which doesn't
+-    work for wxTreeCtrl prior wx version 3.1.1. See also the following URL.
+-    https://github.com/wxWidgets/wxWidgets/commit/caea08e6b2b9e4843e84c61abc879880a08634b0
+-  */
+-#if wxCHECK_VERSION(3, 1, 1)
+-  EVT_CONTEXT_MENU(TreeCtrl::OnContextMenu)
+-#else
+-#ifdef __WINDOWS__
+-  EVT_RIGHT_UP(TreeCtrl::OnMouseRightClick)
+-#else
+-  EVT_RIGHT_DOWN(TreeCtrl::OnMouseRightClick)
+-#endif
+-#endif // wxCHECK_VERSION(3, 1, 1)
+-
+-  EVT_LEFT_DOWN(TreeCtrl::OnMouseLeftClick)
+-////@end TreeCtrl event table entries
+-END_EVENT_TABLE()
+-
+ const wchar_t GROUP_SEP = L'.';
+ #define GROUP_SEL_STR wxT(".")
+ 
+@@ -211,6 +170,42 @@
+                                                            m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
+ {
+   Init();
++
++  Bind(wxEVT_TREE_SEL_CHANGED, &TreeCtrl::OnTreectrlSelChanged, this, ID_TREECTRL);
++  Bind(wxEVT_TREE_ITEM_ACTIVATED, &TreeCtrl::OnTreectrlItemActivated, this, ID_TREECTRL);
++  Bind(wxEVT_TREE_ITEM_MENU,
++     static_cast<void (TreeCtrl::*)(wxTreeEvent&)>(&TreeCtrl::OnContextMenu),
++     this, ID_TREECTRL);
++  Bind(wxEVT_TREE_ITEM_GETTOOLTIP, &TreeCtrl::OnGetToolTip, this, ID_TREECTRL);
++  Bind(wxEVT_MENU, &TreeCtrl::OnAddGroup, this, ID_ADDGROUP);
++  Bind(wxEVT_MENU, &TreeCtrl::OnRenameGroup, this, ID_RENAME);
++  Bind(wxEVT_TREE_BEGIN_LABEL_EDIT, &TreeCtrl::OnStartLabelEdit, this, ID_TREECTRL);
++  Bind(wxEVT_TREE_END_LABEL_EDIT, &TreeCtrl::OnEndLabelEdit, this, ID_TREECTRL);
++  Bind(wxEVT_TREE_END_LABEL_EDIT, &TreeCtrl::OnEndLabelEdit, this, ID_TREECTRL_1);
++  Bind(wxEVT_TREE_KEY_DOWN, &TreeCtrl::OnKeyDown, this, ID_TREECTRL);
++  Bind(wxEVT_TREE_BEGIN_DRAG, &TreeCtrl::OnBeginDrag, this, ID_TREECTRL);
++  Bind(wxEVT_TREE_END_DRAG, &TreeCtrl::OnEndDrag, this, ID_TREECTRL);
++  Bind(wxEVT_MOTION, &TreeCtrl::OnMouseMove, this);
++  /*
++    In Linux environments context menus appear on Right-Down mouse click.
++    Which mouse click type (Right-Down/Right-Up) is the right one on a platform
++    is considered by 'EVT_CONTEXT_MENU(TreeCtrl::OnContextMenu)' which doesn't
++    work for wxTreeCtrl prior wx version 3.1.1. See also the following URL.
++    https://github.com/wxWidgets/wxWidgets/commit/caea08e6b2b9e4843e84c61abc879880a08634b0
++  */
++#if wxCHECK_VERSION(3, 1, 1)
++  Bind(wxEVT_CONTEXT_MENU,
++     static_cast<void (TreeCtrl::*)(wxContextMenuEvent&)>(&TreeCtrl::OnContextMenu),
++     this);
++#else
++#ifdef __WINDOWS__
++  Bind(wxEVT_RIGHT_UP, &TreeCtrl::OnMouseRightClick, this);
++#else
++  Bind(wxEVT_RIGHT_DOWN, &TreeCtrl::OnMouseRightClick, this);
++#endif
++#endif // wxCHECK_VERSION(3, 1, 1)
++  Bind(wxEVT_LEFT_DOWN, &TreeCtrl::OnMouseLeftClick, this);
++
+   Create(parent, id, pos, size, style);
+ }
+ 

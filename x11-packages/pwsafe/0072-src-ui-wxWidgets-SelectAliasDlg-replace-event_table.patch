@@ -1,0 +1,115 @@
+--- a/src/ui/wxWidgets/SelectAliasDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/SelectAliasDlg.cpp	2026-04-27 22:40:42.332754104 -0400
+@@ -51,24 +51,6 @@
+ 
+ IMPLEMENT_DYNAMIC_CLASS( SelectAliasDlg, wxDialog )
+ 
+-
+-/*!
+- * SelectAliasDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( SelectAliasDlg, wxDialog )
+-
+-////@begin SelectAliasDlg event table entries
+-  EVT_BUTTON( wxID_REMOVE, SelectAliasDlg::OnRemoveClick )
+-  EVT_BUTTON( wxID_OK, SelectAliasDlg::OnOkClick )
+-  EVT_BUTTON( wxID_CANCEL, SelectAliasDlg::OnCancelClick )
+-  EVT_BUTTON( wxID_HELP, SelectAliasDlg::OnHelpClick )
+-////@end SelectAliasDlg event table entries
+-
+-END_EVENT_TABLE()
+-
+-
+-
+ /*!
+  * SelectTreeCtrl type definition
+  */
+@@ -76,51 +58,46 @@
+ IMPLEMENT_CLASS( SelectTreeCtrl, wxTreeCtrl )
+ 
+ /*!
+- * SelectTreeCtrl event table definition
++ * SelectTreeCtrl constructors
+  */
+ 
+-BEGIN_EVENT_TABLE( SelectTreeCtrl, wxTreeCtrl )
++SelectTreeCtrl::SelectTreeCtrl(PWScore &core) : TreeCtrlBase(core)
++{
++  Init();
++}
++
++SelectTreeCtrl::SelectTreeCtrl(wxWindow* parent, PWScore &core,
++                         wxWindowID id, const wxPoint& pos,
++                         const wxSize& size, long style) : TreeCtrlBase(core)
++{
++  Init();
+ 
+-////@begin SelectTreeCtrl event table entries
+-  EVT_TREE_SEL_CHANGED( ID_ENTRYTREE, SelectTreeCtrl::OnTreectrlSelChanged )
+-  EVT_TREE_ITEM_MENU( ID_ENTRYTREE, SelectTreeCtrl::OnContextMenu )
++  Bind(wxEVT_TREE_SEL_CHANGED, &SelectTreeCtrl::OnTreectrlSelChanged, this, ID_ENTRYTREE);
++  Bind(wxEVT_TREE_ITEM_MENU,
++     static_cast<void (SelectTreeCtrl::*)(wxTreeEvent&)>(&SelectTreeCtrl::OnContextMenu),
++     this, ID_ENTRYTREE);
+   /*
+     In Linux environments context menus appear on Right-Down mouse click.
+     Which mouse click type (Right-Down/Right-Up) is the right one on a platform
+     is considered by 'EVT_CONTEXT_MENU(TreeCtrl::OnContextMenu)' which doesn't
+     work for wxTreeCtrl prior wx version 3.1.1. See also the following URL.
+     https://github.com/wxWidgets/wxWidgets/commit/caea08e6b2b9e4843e84c61abc879880a08634b0
+-  */
++   */
+ #if wxCHECK_VERSION(3, 1, 1)
+-  EVT_CONTEXT_MENU(SelectTreeCtrl::OnContextMenu)
++  Bind(wxEVT_CONTEXT_MENU,
++     static_cast<void (SelectTreeCtrl::*)(wxContextMenuEvent&)>(&SelectTreeCtrl::OnContextMenu),
++     this);
+ #else
+ #ifdef __WINDOWS__
+-  EVT_RIGHT_UP(SelectTreeCtrl::OnMouseRightClick)
++  Bind(wxEVT_RIGHT_UP, &SelectTreeCtrl::OnMouseRightClick, this);
+ #else
+-  EVT_RIGHT_DOWN(SelectTreeCtrl::OnMouseRightClick)
++  Bind(wxEVT_RIGHT_DOWN, &SelectTreeCtrl::OnMouseRightClick, this);
+ #endif
+ #endif // wxCHECK_VERSION(3, 1, 1)
++  Bind(wxEVT_MENU, &SelectTreeCtrl::OnExpandAll, this, ID_EXPANDALL_SELECT);
++  Bind(wxEVT_MENU, &SelectTreeCtrl::OnCollapseAll, this, ID_COLLAPSEALL_SELECT);
++  Bind(wxEVT_MENU, &SelectTreeCtrl::OnViewClick, this, ID_VIEW_SELECT);
+ 
+-  EVT_MENU( ID_EXPANDALL_SELECT,   SelectTreeCtrl::OnExpandAll )
+-  EVT_MENU( ID_COLLAPSEALL_SELECT, SelectTreeCtrl::OnCollapseAll )
+-  EVT_MENU( ID_VIEW_SELECT,        SelectTreeCtrl::OnViewClick )
+-////@end SelectTreeCtrl event table entries
+-END_EVENT_TABLE()
+-
+-/*!
+- * SelectTreeCtrl constructors
+- */
+-
+-SelectTreeCtrl::SelectTreeCtrl(PWScore &core) : TreeCtrlBase(core)
+-{
+-  Init();
+-}
+-
+-SelectTreeCtrl::SelectTreeCtrl(wxWindow* parent, PWScore &core,
+-                         wxWindowID id, const wxPoint& pos,
+-                         const wxSize& size, long style) : TreeCtrlBase(core)
+-{
+-  Init();
+   Create(parent, id, pos, size, style);
+ }
+ 
+@@ -239,6 +216,11 @@
+   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++  Bind(wxEVT_BUTTON, &SelectAliasDlg::OnRemoveClick, this, wxID_REMOVE);
++  Bind(wxEVT_BUTTON, &SelectAliasDlg::OnOkClick, this, wxID_OK);
++  Bind(wxEVT_BUTTON, &SelectAliasDlg::OnCancelClick, this, wxID_CANCEL);
++  Bind(wxEVT_BUTTON, &SelectAliasDlg::OnHelpClick, this, wxID_HELP);
++
+   CreateControls();
+   if (GetSizer())
+   {

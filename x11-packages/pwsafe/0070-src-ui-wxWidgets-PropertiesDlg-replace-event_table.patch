@@ -1,0 +1,35 @@
+--- a/src/ui/wxWidgets/PropertiesDlg.cpp	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/PropertiesDlg.cpp	2026-04-27 20:27:34.980757151 -0400
+@@ -41,21 +41,6 @@
+ IMPLEMENT_CLASS( PropertiesDlg, wxDialog )
+ 
+ /*!
+- * PropertiesDlg event table definition
+- */
+-
+-BEGIN_EVENT_TABLE( PropertiesDlg, wxDialog )
+-
+-////@begin PropertiesDlg event table entries
+-  EVT_BUTTON( wxID_CLOSE,                  PropertiesDlg::OnCloseClick )
+-  EVT_BUTTON( wxID_CHANGE_NAME,         PropertiesDlg::OnEditName )
+-  EVT_BUTTON( wxID_CHANGE_DESCRIPTION,  PropertiesDlg::OnEditDescription )
+-
+-////@end PropertiesDlg event table entries
+-
+-END_EVENT_TABLE()
+-
+-/*!
+  * PropertiesDlg constructors
+  */
+ 
+@@ -72,6 +57,10 @@
+   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
+   wxDialog::Create( parent, id, caption, pos, size, style );
+ 
++  Bind(wxEVT_BUTTON, &PropertiesDlg::OnCloseClick, this, wxID_CLOSE);
++  Bind(wxEVT_BUTTON, &PropertiesDlg::OnEditName, this, wxID_CHANGE_NAME);
++  Bind(wxEVT_BUTTON, &PropertiesDlg::OnEditDescription, this, wxID_CHANGE_DESCRIPTION);
++
+   CreateControls();
+   if (GetSizer())
+   {

@@ -1,0 +1,11 @@
+--- a/src/ui/wxWidgets/ExportTextWarningDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/ExportTextWarningDlg.h	2026-04-23 15:48:07.143056426 -0400
+@@ -31,7 +31,7 @@
+ {
+ 
+   DECLARE_CLASS( ExportTextWarningDlgBase )
+-  DECLARE_EVENT_TABLE()
++
+ public:
+   SelectionCriteria* selCriteria;
+   StringX           passKey;

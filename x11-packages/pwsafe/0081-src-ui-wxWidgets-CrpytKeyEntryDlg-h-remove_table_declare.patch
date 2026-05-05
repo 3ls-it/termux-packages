@@ -1,0 +1,11 @@
+--- a/src/ui/wxWidgets/CryptKeyEntryDlg.h	2025-11-22 04:17:08.000000000 -0500
++++ b/src/ui/wxWidgets/CryptKeyEntryDlg.h	2026-04-28 20:17:21.560724426 -0400
+@@ -64,8 +64,6 @@
+ 
+   Mode m_Mode;
+   StringX m_CryptKey;
+-
+-  DECLARE_EVENT_TABLE()
+ };
+ 
+ #endif // _CRYPTKEYENTRYDLG_H_
